@@ -334,6 +334,14 @@ class PresensiController extends Controller
         return response()->json($matkul);
     }
 
+    public function getStatusPresensi($id)
+    {
+        $status = DetailPresensi::where('presensi_id', $id)
+            ->get(['mahasiswa_id', 'status', 'waktu_presensi']);
+
+        return response()->json($status);
+    }
+
         public function validateField(Request $request)
     {
         $rules = (new StorePresensi())->rules();
