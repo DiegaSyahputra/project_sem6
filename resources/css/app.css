@@ -91,3 +91,38 @@
     background-color: #e0f2fe;
     border-color: #3b82f6;
 }
+
+.dataTables_scroll,
+.dataTables_scrollHead,
+.dataTables_scrollHeadInner,
+.dataTables_scrollHeadInner table,
+.dataTables_scrollBody,
+.dataTables_scrollBody table {
+    width: 100% !important;
+    min-width: 100% !important;
+}
+
+.dataTables_scrollHeadInner {
+    padding-right: 0 !important;
+}
+
+/* 2. Matikan paksaan lebar pixel pada kolom agar sinkron otomatis */
+#data-presensi th, 
+#data-presensi td {
+    width: auto !important;
+    min-width: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* 3. Khusus untuk Mobile: Berikan scroll horizontal pada pembungkusnya saja */
+.dataTables_wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* 4. Pastikan teks tidak memaksa tabel melebar (wrap) */
+#data-presensi td {
+    white-space: normal !important; /* Agar teks bisa turun ke bawah */
+    word-break: break-word;
+}

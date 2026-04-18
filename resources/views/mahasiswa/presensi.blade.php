@@ -10,7 +10,15 @@
             </span>
         </p>
 
-        <div class="w-full overflow-x-auto max-w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl h-full">
+        <div class="w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl">
+            <div class="mb-4">
+                <a href="{{ route('mahasiswa.presensi.izin') }}" 
+                class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-bold shadow-lg shadow-orange-200 dark:shadow-none transition-all transform hover:scale-105">
+                    <i class="bi bi-file-earmark-plus text-xl"></i>
+                    Ajukan Izin / Sakit
+                </a>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 h-full">
                 <div class="bg-gray-200 dark:bg-[#1e293b] rounded-md p-6 shadow-md flex flex-col items-center justify-center text-center h-full">
                     <div class="flex flex-col items-center">
@@ -129,6 +137,8 @@
                     </div>
                 </div>
             </div>
+            
         </div>
+        
     </div>
 </x-layout>

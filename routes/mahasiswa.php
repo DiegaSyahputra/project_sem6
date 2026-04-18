@@ -11,6 +11,8 @@ Route::middleware(['auth', 'role:mahasiswa'])->prefix('mahasiswa')->name('mahasi
     Route::get('/presensi', [PresensiController::class,'index'])->name('presensi');
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
 
+    Route::get('/presensi/izin', [PresensiController::class, 'izin'])->name('presensi.izin');
+
     Route::get('/jadwal',[JadwalController::class,'index'])->name('jadwal');
     Route::get('/jadwal/export/pdf', [JadwalController::class, 'exportJadwalPdf'])->name('export.jadwal.pdf');
     Route::get('/jadwal/export/excel', [JadwalController::class, 'exportJadwalExcel'])->name('export.jadwal.excel');

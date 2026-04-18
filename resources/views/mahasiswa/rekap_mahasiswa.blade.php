@@ -22,27 +22,27 @@
             </div>
         </div>
 
-        <div class="w-full h-max max-w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl border dark:border-gray-700">
+        <div class="w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl">
 
             <div class="mt-2 mb-5 flex gap-4">
                 <a href="{{route('mahasiswa.export.mahasiswa.excel')}}">
-                    <button class="flex items-center px-4 py-2.5 text-white bg-green-700 hover:bg-green-800 active:bg-green-900 rounded-sm font-semibold cursor-pointer">
+                    <button class="flex items-center px-4 py-2.5 text-white bg-green-700 hover:bg-green-800 active:bg-green-900 rounded-lg font-semibold cursor-pointer">
                         <i class="bi bi-file-earmark-excel mr-2"></i>
                         <span>Export Excel</span>
                     </button>
                 </a>
 
                 <a href="{{route('mahasiswa.export.mahasiswa.pdf')}}">
-                    <button class="flex items-center px-4 py-2.5 text-white bg-red-600 hover:bg-red-700 active:bg-red-800 rounded-sm font-semibold cursor-pointer">
+                    <button class="flex items-center px-4 py-2.5 text-white bg-red-600 hover:bg-red-700 active:bg-red-800 rounded-lg font-semibold cursor-pointer">
                         <i class="bi bi-filetype-pdf mr-2"></i>
                         <span>Export Pdf</span>
                     </button>
                 </a>
             </div>
 
-            <div x-data="{ hovering: false }" class="overflow-x-auto w-[340px] sm:w-150 md:w-240 xl:min-w-full pb-3">
-                <table id="data-rekap-mahasiswa" class="text-sm text-left min-w-full pt-4 display nowrap text-gray-800 dark:text-gray-200">
-                    <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100 sticky top-0 z-10">
+            <div x-data="{ hovering: false }" class="overflow-x-auto w-full mt-3 pb-3">
+                <table id="data-rekap-mahasiswa" class="text-sm w-full table-auto pt-1 dark:text-white" style="width: 100% !important;">
+                    <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100">
                         <tr>
                             <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">No</th>
                             <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Kode Mata Kuliah</th>

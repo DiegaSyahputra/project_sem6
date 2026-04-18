@@ -59,4 +59,13 @@ class PresensiController extends Controller
 
         return view('mahasiswa.presensi', compact('presensi','title','biodata','presensiTercatat','riwayat'));
     }
+
+    public function izin()
+    {
+        $title = 'Pengajuan Izin Presensi';
+        $mahasiswa = Auth::user()->mahasiswa;
+
+        // Kirim variabel title ke view menggunakan compact atau array
+        return view('mahasiswa.izin', compact('title', 'mahasiswa')); 
+    }
 }

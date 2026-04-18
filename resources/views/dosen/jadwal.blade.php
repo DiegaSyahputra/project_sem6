@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <div class="w-full overflow-x-auto max-w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl">
+        <div class="w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl">
             <div class="mt-2 mb-5 flex gap-4">
                 <a id="export-excel" href="{{route('dosen.export.jadwal.excel')}}">
                     <button class="flex items-center px-4 py-2.5 text-white bg-green-700 hover:bg-green-800 active:bg-green-900 rounded-sm font-semibold cursor-pointer">
@@ -36,9 +36,9 @@
                     </button>
                 </a>
             </div>
-            <div class="overflow-x-auto w-[340px] sm:w-150 md:w-full mt-3 pb-3">
-                <table id="data-jadwal" class="text-sm min-w-full pt-1 dark:text-white display nowrap">
-                    <thead class="text-center bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white sticky top-0 z-10">
+            <div class="overflow-x-auto w-full mt-3 pb-3"> 
+                <table id="data-jadwal" class="text-sm w-full table-auto pt-1 dark:text-white" style="width: 100% !important;">
+                    <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100">
                         <tr>
                             <th class="dark:border-gray-600 px-4 py-2">Hari</th>
                             <th class="dark:border-gray-600 px-4 py-2">Jam</th>

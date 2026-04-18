@@ -58,9 +58,9 @@
             </div>
 
             <div x-data="{openView: false}">
-                <div class="overflow-x-auto w-[340px] sm:w-150 md:w-full mt-3 pb-3">
-                    <table id="data-dosen" class="text-sm text-left min-w-full pt-1 dark:border-gray-700 display nowrap">
-                        <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 sticky top-0 z-10">
+                <div class="w-full overflow-x-auto border border-gray-200 rounded-lg">
+                    <table id="data-dosen" class="text-sm w-full table-auto pt-1 dark:text-white" style="width: 100% !important;">
+                        <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100">
                             <tr>
                                 <th class="dark:border-gray-600 px-4">No</th>
                                 <th class="dark:border-gray-600 px-4">Foto</th>
