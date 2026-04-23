@@ -150,12 +150,21 @@
                                 <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
                                     {{ $dp->alasan ?? '-' }}</td>
                                 <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center">
-                                    <div x-data="{ openEdit: false, status: '{{ $dp->status }}', defaultStatus: '{{ $dp->status }}', alasan: '{{ $dp->alasan ?? '' }}', defaultAlasan: '{{ $dp->alasan ?? '' }}' }" class="flex justify-center gap-2"
+                                    <div x-data="{ openEdit: false, openConfirm: false, status: '{{ $dp->status }}', defaultStatus: '{{ $dp->status }}', alasan: '{{ $dp->alasan ?? '' }}', defaultAlasan: '{{ $dp->alasan ?? '' }}' }" class="flex justify-center gap-2"
                                         x-init="openEdit = false, alasan = defaultAlasan">
                                         <button @click="openEdit = !openEdit;"
                                             class="cursor-pointer px-2 py-1 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-md">
                                             <i class="bi bi-pencil-square text-lg"></i>
                                         </button>
+
+                                        @if ($dp->status == 4)
+                                            <button @click="openConfirm = true"
+                                                class="cursor-pointer px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-md"
+                                                title="Konfirmasi Izin">
+                                                <i class="bi bi-check-circle text-lg"></i>
+                                            </button>
+                                        @endif
+                                        
                                         <form action="{{ route('admin.update-detail-presensi') }}" method="post">
                                             @csrf
                                             <input type="hidden" name="mahasiswa_id" value="{{ $dp->mahasiswa_id }}">
