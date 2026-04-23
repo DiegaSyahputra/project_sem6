@@ -23,7 +23,7 @@
             </form>
         </div>
 
-        <div class="w-full h-max max-w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl">
+        <div class="w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl">
 
             <div class="mt-2 mb-5 flex gap-4">
                 <a href="{{route('dosen.export.dosen.excel')}}">
@@ -41,9 +41,9 @@
                 </a>
             </div>
 
-            <div x-data="{ hovering: false }" class="overflow-x-auto w-[340px] sm:w-150 md:w-240 xl:min-w-full mt-1 pb-3">
-                <table id="data-rekap-dosen" class="table-auto text-sm text-left min-w-full pt-4 display nowrap dark:text-white dark:bg-gray-800">
-                    <thead class="bg-gray-200 text-gray-700 sticky top-0 z-10 dark:bg-gray-700 dark:text-gray-100">
+            <div x-data="{ hovering: false }" class="overflow-x-auto w-full mt-3 pb-3">
+                <table id="data-rekap-dosen" class="text-sm w-full table-auto pt-1 dark:text-white" style="width: 100% !important;">
+                    <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100">
                         <tr>
                             <th @mouseenter="hovering = true" @mouseleave="hovering = false"
                                 :class="hovering ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700 dark:text-gray-100'"

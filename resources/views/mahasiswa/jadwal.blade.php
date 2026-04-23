@@ -21,25 +21,25 @@
             </div>
         </div>
 
-        <div class="w-full overflow-x-auto max-w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl">
+        <div class="w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl">
             <div class="mt-2 mb-5 flex gap-4">
                 <a id="export-excel" href="{{route('mahasiswa.export.jadwal.excel')}}">
-                    <button class="flex items-center px-4 py-2.5 text-white bg-green-700 hover:bg-green-800 active:bg-green-900 rounded-sm font-semibold cursor-pointer">
+                    <button class="flex items-center px-4 py-2.5 text-white bg-green-700 hover:bg-green-800 active:bg-green-900 rounded-lg font-semibold cursor-pointer">
                         <i class="bi bi-file-earmark-excel mr-2"></i>
                         <span>Export Excel</span>
                     </button>
                 </a>
 
                 <a id="export-pdf" href="{{route('mahasiswa.export.jadwal.pdf')}}">
-                    <button class="flex items-center px-4 py-2.5 text-white bg-red-600 hover:bg-red-700 active:bg-red-800 rounded-sm font-semibold cursor-pointer">
+                    <button class="flex items-center px-4 py-2.5 text-white bg-red-600 hover:bg-red-700 active:bg-red-800 rounded-lg font-semibold cursor-pointer">
                         <i class="bi bi-filetype-pdf mr-2"></i>
                         <span>Export Pdf</span>
                     </button>
                 </a>
             </div>
-            <div class="overflow-x-auto w-[340px] sm:w-150 md:w-full mt-3 pb-3">
-                <table id="data-jadwal" class="min-w-full divide-y pt-1 divide-gray-200 dark:divide-gray-600 text-sm text-gray-700 dark:text-gray-200">
-                    <thead class="bg-gray-100 dark:bg-gray-700 sticky top-0 z-10">
+            <div class="overflow-x-auto w-full mt-3 pb-3">
+                <table id="data-jadwal" class="text-sm w-full table-auto pt-1 dark:text-white" style="width: 100% !important;">
+                    <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100">
                         <tr>
                             <th class="px-6 py-3 text-left font-medium">Hari</th>
                             <th class="px-6 py-3 text-left font-medium">Jam</th>

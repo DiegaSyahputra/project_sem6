@@ -42,7 +42,7 @@
     <div x-data="{isSideMenuOpen: false}" @resize.window="if (window.innerWidth >= 1280) isSideMenuOpen = false" class="flex h-screen">
         <x-sidebar></x-sidebar>
 
-        <div class="xl:ml-64 ease-in-out duration-200 flex flex-col flex-1">
+        <div class="xl:pl-64 w-full ease-in-out duration-200 flex flex-col min-w-0">
             <x-navbar></x-navbar>
             <div x-bind:class="isSideMenuOpen ? 'opacity-70 pointer-events-auto' : 'opacity-0 pointer-events-none'"
                 class="fixed inset-0 z-20 bg-gray-600 transition-opacity duration-300"></div>

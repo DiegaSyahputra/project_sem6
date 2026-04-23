@@ -57,7 +57,7 @@
                         </div>
                     </div>
 
-                    <div x-show="open" class="text-left text-sm font-thin mt-2 w-4/5 mx-auto text-gray-200">
+                    <div x-show="open" class="text-left text-sm font-thin mt-2 w-4/5 mx-auto text-gray-100">
                         <a href="{{route('admin.master-dosen.index')}}" class="mt-2 w-4/5">
                             <h1 class="cursor-pointer p-2 hover:bg-blue-400 dark:hover:bg-gray-700 dark:active:bg-gray-500 active:bg-blue-500 rounded-md mt-1">Dosen</h1>
                         </a>
