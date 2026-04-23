@@ -71,7 +71,7 @@ $(document).ready(function () {
         if (filter === "week") {
             let today = new Date();
             let firstDay = new Date(
-                today.setDate(today.getDate() - today.getDay())
+                today.setDate(today.getDate() - today.getDay()),
             );
             let lastDay = new Date(firstDay);
             lastDay.setDate(firstDay.getDate() + 6);
@@ -90,7 +90,7 @@ $(document).ready(function () {
             let lastDay = new Date(
                 today.getFullYear(),
                 today.getMonth() + 1,
-                0
+                0,
             );
 
             firstDay.setHours(0, 0, 0, 0);
@@ -144,7 +144,7 @@ $(document).ready(function () {
                         mataKuliahSelect.append(
                             `<option value="${item.id}" ${
                                 item.id == oldMatkulId ? "selected" : ""
-                            }>${item.nama_matkul}</option>`
+                            }>${item.nama_matkul}</option>`,
                         );
                     });
                 })

@@ -1,19 +1,24 @@
 <x-layout>
+    @vite(['resources/js/pages/admin/data-presensi-show.js'])
     <div class="h-full dark:text-white">
-      <x-slot:title>{{ $title }}</x-slot:title>
-      <p class="text-gray-700 dark:text-white">Tinjau Detail Kehadiran Perkuliahan</p>
+        <x-slot:title>{{ $title }}</x-slot:title>
+        <p class="text-gray-700 dark:text-white">Tinjau Detail Kehadiran Perkuliahan</p>
 
         <div class="w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl">
             <div class="mb-5 justify-start flex">
-                <a href="{{route('admin.presensi.index')}}">
-                    <button class="px-5 py-2 bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-semibold rounded-md cursor-pointer"><i class="bi bi-arrow-return-left"></i></button>
+                <a href="{{ route('admin.presensi.index') }}">
+                    <button
+                        class="px-5 py-2 bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-semibold rounded-md cursor-pointer"><i
+                            class="bi bi-arrow-return-left"></i></button>
                 </a>
             </div>
 
             <h1 class="mb-2 text-2xl font-semibold text-gray-700 dark:text-white">Dosen Pengajar</h1>
-            <div class="overflow-x-auto w-full mt-3 pb-3"> 
-                <table id="datail-presensi" class="text-sm w-full table-auto pt-1 dark:text-white" style="width: 100% !important;">
-                    <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100">
+            <input type="hidden" id="presensi-id" value="{{ $presensi->id }}">
+            <div class="overflow-x-auto w-[340px] sm:w-150 md:w-full mt-3 pb-3">
+                <table id="detail-presensi" class="text-sm text-left min-w-full pt-2 text-gray-800 dark:text-gray-100"
+                    width="100%">
+                    <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100 sticky top-0 z-10">
                         <tr>
                             <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Tanggal</th>
                             <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Jam Perkuliahan</th>
@@ -32,45 +37,70 @@
                     </thead>
                     <tbody class="text-center">
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$presensi->tgl_presensi ?? '-'}}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{substr($presensi->jam_awal,0,5) .' - '.substr($presensi->jam_akhir,0,5) ?? '-'}}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$presensi->pertemuan->matkul->nama_matkul ?? '-'}}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$presensi->dosen->nama ?? '-'}}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$presensi->pertemuan->prodi->nama_prodi ?? '-'}}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$presensi->pertemuan->semester ?? '-'}}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$presensi->ruangan->nama_ruangan ?? '-'}}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$presensi->pertemuan->pertemuan_ke ?? '-'}}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{strtoupper($presensi->pertemuan->jenis ?? '-')}}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center">
-                            @switch($presensi->pertemuan->status)
-                                @case('aktif')
-                                    <span class="inline-block px-3 py-1 text-sm font-semibold text-white bg-green-500 rounded-full">Aktif</span>
-                                @break
-                                @case('uts')
-                                    <span class="inline-block px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">UTS</span>
-                                @break
-                                @case('uas')
-                                    <span class="inline-block px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">UAS</span>
-                                @break
-                                @case('libur')
-                                    <span class="inline-block px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">Libur</span>
-                                @break
-                                @default
-                                    <span class="inline-block px-3 py-1 text-sm font-semibold text-white bg-gray-500 rounded-full">-</span>
-                            @endswitch
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->tgl_presensi ?? '-' }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ substr($presensi->jam_awal, 0, 5) . ' - ' . substr($presensi->jam_akhir, 0, 5) ?? '-' }}
                             </td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$presensi->pertemuan->tahun->tahun_awal .'/'. $presensi->pertemuan->tahun->tahun_akhir .' '. $presensi->pertemuan->tahun->keterangan ?? '-'}}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$presensi->link_zoom ?? '-'}}</td>
-                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$presensi->link_zoom ? 'Daring' : 'Luring'}}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->pertemuan->matkul->nama_matkul ?? '-' }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->dosen->nama ?? '-' }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->pertemuan->prodi->nama_prodi ?? '-' }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->pertemuan->semester ?? '-' }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->ruangan->nama_ruangan ?? '-' }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->pertemuan->pertemuan_ke ?? '-' }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ strtoupper($presensi->pertemuan->jenis ?? '-') }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center">
+                                @switch($presensi->pertemuan->status)
+                                    @case('aktif')
+                                        <span
+                                            class="inline-block px-3 py-1 text-sm font-semibold text-white bg-green-500 rounded-full">Aktif</span>
+                                    @break
+
+                                    @case('uts')
+                                        <span
+                                            class="inline-block px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">UTS</span>
+                                    @break
+
+                                    @case('uas')
+                                        <span
+                                            class="inline-block px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">UAS</span>
+                                    @break
+
+                                    @case('libur')
+                                        <span
+                                            class="inline-block px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">Libur</span>
+                                    @break
+
+                                    @default
+                                        <span
+                                            class="inline-block px-3 py-1 text-sm font-semibold text-white bg-gray-500 rounded-full">-</span>
+                                @endswitch
+                            </td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->pertemuan->tahun->tahun_awal . '/' . $presensi->pertemuan->tahun->tahun_akhir . ' ' . $presensi->pertemuan->tahun->keterangan ?? '-' }}
+                            </td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->link_zoom ?? '-' }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->link_zoom ? 'Daring' : 'Luring' }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <h1 class="mb-2 mt-6 text-2xl font-semibold text-gray-700 dark:text-white">Mahasiswa</h1>
-            <div class="overflow-x-auto w-full mt-3 pb-3"> 
-                <table id="datail-mahasiswa" class="text-sm w-full table-auto pt-1 dark:text-white" style="width: 100% !important;">
-                    <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100">
+            <div class="overflow-x-auto w-[270px] sm:w-150 md:w-full mt-3 pb-3">
+                <table id="detail-mahasiswa"
+                    class="text-sm text-left w-full pt-1 text-gray-800 dark:text-gray-100 display nowrap"
+                    width="100%">
+                    <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100 sticky top-0 z-10">
                         <tr>
                             <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">No</th>
                             <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Nim</th>
@@ -83,12 +113,20 @@
                     </thead>
                     <tbody class="">
                         @foreach ($detail as $dp)
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$loop->iteration}}</td>
-                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$dp->mahasiswa->nim}}</td>
-                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$dp->mahasiswa->nama}}</td>
-                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$dp->waktu_presensi ?? '-'}}</td>
-                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center">
+                            <tr data-mahasiswa-id="{{ $dp->mahasiswa_id }}"
+                                class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                    {{ $loop->iteration }}</td>
+                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                    {{ $dp->mahasiswa->nim }}</td>
+                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                    {{ $dp->mahasiswa->nama }}</td>
+                                <td class="col-waktu border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                    {{ $dp->waktu_presensi ?? '-' }}</td>
+                                <td class="col-status border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                    <span class="badge-status"></span>
+                                </td>
+                                {{-- <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center">
                                 @switch($dp->status)
                                     @case(0)
                                         <span class="inline-block px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">Alpha</span>
@@ -108,87 +146,140 @@
                                     @default
                                         <span class="inline-block px-3 py-1 text-sm font-semibold text-white bg-gray-500 rounded-full">-</span>
                                 @endswitch
-                                </td>
-                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">{{$dp->alasan ?? '-'}}</td>
+                                </td> --}}
+                                <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                    {{ $dp->alasan ?? '-' }}</td>
                                 <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center">
-                                    <div x-data="{ 
-                                        openEdit: false, 
-                                        openConfirm: false,
-                                        status: '{{$dp->status}}', 
-                                        defaultStatus: '{{$dp->status}}', 
-                                        alasan: '{{$dp->alasan ?? ''}}', 
-                                        defaultAlasan: '{{$dp->alasan ?? ''}}' 
-                                    }" class="flex justify-center gap-2">
-                                        
-                                        <button @click="openEdit = true" class="cursor-pointer px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-md" title="Edit Manual">
+                                    <div x-data="{ openEdit: false, status: '{{ $dp->status }}', defaultStatus: '{{ $dp->status }}', alasan: '{{ $dp->alasan ?? '' }}', defaultAlasan: '{{ $dp->alasan ?? '' }}' }" class="flex justify-center gap-2"
+                                        x-init="openEdit = false, alasan = defaultAlasan">
+                                        <button @click="openEdit = !openEdit;"
+                                            class="cursor-pointer px-2 py-1 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-md">
                                             <i class="bi bi-pencil-square text-lg"></i>
                                         </button>
-
-                                        @if($dp->status == 4)
-                                        <button @click="openConfirm = true" class="cursor-pointer px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-md" title="Konfirmasi Izin">
-                                            <i class="bi bi-check-circle text-lg"></i>
-                                        </button>
-                                        @endif
-
-                                        <form action="{{route('admin.update-detail-presensi')}}" method="post">
+                                        <form action="{{ route('admin.update-detail-presensi') }}" method="post">
                                             @csrf
                                             <input type="hidden" name="mahasiswa_id" value="{{ $dp->mahasiswa_id }}">
                                             <input type="hidden" name="presensi_id" value="{{ $dp->presensi_id }}">
-                                            
-                                            <div x-show="openEdit" x-cloak x-transition class="fixed inset-0 z-50 flex justify-center items-center">
+                                            <div x-show="openEdit" x-cloak x-transition
+                                                class="fixed inset-0 z-50 flex justify-center items-center">
                                                 <div class="absolute inset-0 bg-black opacity-50"></div>
-                                                <div @click.outside="openEdit = false" class="relative z-10 bg-white dark:bg-gray-900 rounded-lg shadow-2xl w-[90%] max-w-md p-6">
-                                                    <h2 class="text-xl font-semibold dark:text-white mb-4">Ubah Presensi Manual</h2>
-                                                    <div class="flex flex-wrap justify-center gap-4 mb-4 text-gray-800 dark:text-gray-100">
-                                                        <label><input type="radio" name="status" value="1" x-model="status"> Hadir</label>
-                                                        <label><input type="radio" name="status" value="2" x-model="status"> Izin</label>
-                                                        <label><input type="radio" name="status" value="3" x-model="status"> Sakit</label>
-                                                        <label><input type="radio" name="status" value="4" x-model="status"> Pending</label>
-                                                        <label><input type="radio" name="status" value="0" x-model="status"> Alpha</label>
+                                                <div @click.outside="status = defaultStatus; alasan = defaultAlasan; openEdit = false"
+                                                    class="relative z-10 bg-white dark:bg-gray-900 rounded-lg shadow-2xl w-[90%] max-w-md p-6">
+                                                    <div class="flex justify-center mb-4">
+                                                        <div class="bg-blue-100 dark:bg-blue-300 rounded-full p-4">
+                                                            <i class="bi bi-pencil-square text-4xl text-blue-600"></i>
+                                                        </div>
                                                     </div>
-                                                    <textarea id="alasan" name="alasan" x-model="alasan" rows="3" 
-                                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 rounded-md" 
-                                                        x-bind:disabled="!(status == 2 || status == 3 || status == 4)">
-                                                    </textarea>
+                                                    <h2
+                                                        class="text-xl font-semibold text-gray-800 dark:text-white text-center mb-4">
+                                                        Ubah Presensi Manual</h2>
+                                                    <div
+                                                        class="flex flex-wrap justify-center gap-4 mb-6 text-gray-800 dark:text-gray-100">
+                                                        <label class="inline-flex items-center">
+                                                            <input type="radio" name="status" value="1"
+                                                                class="form-radio text-green-600" x-model="status">
+                                                            <span class="ml-2">Hadir</span>
+                                                        </label>
+                                                        <label class="inline-flex items-center">
+                                                            <input type="radio" name="status" value="2"
+                                                                class="form-radio text-gray-500" x-model="status">
+                                                            <span class="ml-2">Izin</span>
+                                                        </label>
+                                                        <label class="inline-flex items-center">
+                                                            <input type="radio" name="status" value="3"
+                                                                class="form-radio text-yellow-500" x-model="status">
+                                                            <span class="ml-2">Sakit</span>
+                                                        </label>
+                                                        <label class="inline-flex items-center">
+                                                            <input type="radio" name="status" value="4"
+                                                                class="form-radio text-orange-500" x-model="status">
+                                                            <span class="ml-2">Pending</span>
+                                                        </label>
+                                                        <label class="inline-flex items-center">
+                                                            <input type="radio" name="status" value="0"
+                                                                class="form-radio text-red-600" x-model="status">
+                                                            <span class="ml-2">Alpha</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="mb-6 w-full">
+                                                        <label for="alasan"
+                                                            class="block text-gray-700 dark:text-gray-200 mb-1">Alasan:</label>
+                                                        <textarea id="alasan" name="alasan" x-model="alasan" rows="3"
+                                                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                            x-bind:disabled="!(status == 2 || status == 3)"></textarea>
+                                                    </div>
+
+                                                    @if ($dp->bukti)
+                                                        <a href="{{ asset('storage/bukti/' . $dp->bukti) }}"
+                                                            target="_blank"
+                                                            class="cursor-pointer px-5 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md"
+                                                            title="Download Bukti">
+                                                            <i class="bi bi-download text-lg"></i>
+                                                        </a>
+                                                    @endif
+
                                                     <div class="flex justify-end space-x-3 mt-6">
-                                                        <button type="button" @click="openEdit = false" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded">Batal</button>
-                                                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Simpan</button>
+                                                        <button type="button"
+                                                            @click=" status = defaultStatus; alasan = defaultAlasan; openEdit = false;"
+                                                            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white rounded hover:bg-gray-300 dark:hover:bg-gray-600">
+                                                            Batal
+                                                        </button>
+                                                        <button type="submit"
+                                                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                                            Simpan
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
 
-                                        <div x-show="openConfirm" x-cloak x-transition class="fixed inset-0 z-50 flex justify-center items-center">
+                                        <div x-show="openConfirm" x-cloak x-transition
+                                            class="fixed inset-0 z-50 flex justify-center items-center">
                                             <div class="absolute inset-0 bg-black opacity-50"></div>
-                                            <div @click.outside="openConfirm = false" class="relative z-10 bg-white dark:bg-gray-900 rounded-lg shadow-2xl w-[90%] max-w-lg p-6 text-left">
+                                            <div @click.outside="openConfirm = false"
+                                                class="relative z-10 bg-white dark:bg-gray-900 rounded-lg shadow-2xl w-[90%] max-w-lg p-6 text-left">
                                                 <div class="flex justify-between items-center mb-4">
-                                                    <h2 class="text-xl font-bold dark:text-white">Konfirmasi Surat Izin</h2>
-                                                    <button @click="openConfirm = false" class="text-gray-500"><i class="bi bi-x-lg"></i></button>
+                                                    <h2 class="text-xl font-bold dark:text-white">Konfirmasi Surat Izin
+                                                    </h2>
+                                                    <button @click="openConfirm = false" class="text-gray-500"><i
+                                                            class="bi bi-x-lg"></i></button>
                                                 </div>
 
                                                 <div class="mb-4">
-                                                    <p class="text-sm font-semibold text-gray-600 dark:text-gray-400 italic mb-1">Bukti Surat Izin (Preview):</p>
-                                                    
-                                                    <div class="mt-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-gray-50 shadow-inner flex justify-center items-center">
-                                                        <img src="https://picsum.photos/seed/surat/500/600" 
-                                                            class="max-h-64 w-auto object-contain shadow-md" 
+                                                    <p
+                                                        class="text-sm font-semibold text-gray-600 dark:text-gray-400 italic mb-1">
+                                                        Bukti Surat Izin (Preview):</p>
+
+                                                    <div
+                                                        class="mt-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-gray-50 shadow-inner flex justify-center items-center">
+                                                        <img src="https://picsum.photos/seed/surat/500/600"
+                                                            class="max-h-64 w-auto object-contain shadow-md"
                                                             alt="Preview Surat Izin"
                                                             onerror="this.onerror=null; this.src='https://via.placeholder.com/500x600?text=Gambar+Gagal+Dimuat';">
                                                     </div>
 
-                                                    <a href="https://picsum.photos/seed/surat/500/600" target="_blank" rel="noopener noreferrer" class="block mt-3 text-blue-600 hover:underline text-sm text-center font-bold">
-                                                        <i class="bi bi-box-arrow-up-right mr-1"></i> Lihat Full Dokumen
+                                                    <a href="https://picsum.photos/seed/surat/500/600" target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        class="block mt-3 text-blue-600 hover:underline text-sm text-center font-bold">
+                                                        <i class="bi bi-box-arrow-up-right mr-1"></i> Lihat Full
+                                                        Dokumen
                                                     </a>
                                                 </div>
 
-                                                <form action="{{route('admin.update-detail-presensi')}}" method="post">
+                                                <form action="{{ route('admin.update-detail-presensi') }}"
+                                                    method="post">
                                                     @csrf
-                                                    <input type="hidden" name="mahasiswa_id" value="{{ $dp->mahasiswa_id }}">
-                                                    <input type="hidden" name="presensi_id" value="{{ $dp->presensi_id }}">
-                                                    
+                                                    <input type="hidden" name="mahasiswa_id"
+                                                        value="{{ $dp->mahasiswa_id }}">
+                                                    <input type="hidden" name="presensi_id"
+                                                        value="{{ $dp->presensi_id }}">
+
                                                     <div class="mb-4">
-                                                        <label class="block text-sm font-semibold dark:text-white mb-1">Setujui Sebagai:</label>
-                                                        <select name="status" required class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md">
+                                                        <label
+                                                            class="block text-sm font-semibold dark:text-white mb-1">Setujui
+                                                            Sebagai:</label>
+                                                        <select name="status" required
+                                                            class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md">
                                                             <option value="2">Izin (Disetujui)</option>
                                                             <option value="3">Sakit (Disetujui)</option>
                                                             <option value="0">Tolak (Alpha)</option>
@@ -196,13 +287,19 @@
                                                     </div>
 
                                                     <div class="mb-4">
-                                                        <label class="block text-sm font-semibold dark:text-white mb-1">Catatan/Alasan (Opsional):</label>
+                                                        <label
+                                                            class="block text-sm font-semibold dark:text-white mb-1">Catatan/Alasan
+                                                            (Opsional)
+                                                            :</label>
                                                         <textarea name="alasan" rows="2" class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md">{{ $dp->alasan }}</textarea>
                                                     </div>
 
                                                     <div class="flex justify-end gap-2">
-                                                        <button type="button" @click="openConfirm = false" class="px-4 py-2 bg-gray-500 text-white rounded-md text-sm">Batal</button>
-                                                        <button type="submit" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-bold">Setujui & Perbarui</button>
+                                                        <button type="button" @click="openConfirm = false"
+                                                            class="px-4 py-2 bg-gray-500 text-white rounded-md text-sm">Batal</button>
+                                                        <button type="submit"
+                                                            class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-bold">Setujui
+                                                            & Perbarui</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -220,7 +317,7 @@
 </x-layout>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         table = $("#detail-mahasiswa").DataTable({
             searching: true,
             paging: true,
