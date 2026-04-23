@@ -107,7 +107,7 @@
 }
 
 /* 2. Matikan paksaan lebar pixel pada kolom agar sinkron otomatis */
-#data-presensi th, 
+#data-presensi th,
 #data-presensi td {
     width: auto !important;
     min-width: auto !important;
