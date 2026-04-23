@@ -6,6 +6,7 @@ const statusBadge = (status) => {
         1: { color: "bg-green-500", label: "Hadir" },
         2: { color: "bg-blue-500", label: "Izin" },
         3: { color: "bg-yellow-500", label: "Sakit" },
+        4: { color: "bg-orange-500", label: "Pending" },
     };
     const s = map[status] ?? { color: "bg-gray-400", label: "-" };
     return `<span class="inline-block px-3 py-1 text-sm font-semibold text-white ${s.color} rounded-full">${s.label}</span>`;
