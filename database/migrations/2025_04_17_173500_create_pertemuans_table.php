@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pertemuans', function (Blueprint $table) {
+        Schema::create('pertemuan', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('pertemuan_ke'); // 1-16
             $table->enum('status', ['aktif', 'libur', 'uts', 'uas'])->default('aktif');
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pertemuans');
+        Schema::dropIfExists('pertemuan');
     }
 };

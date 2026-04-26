@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prodi', function (Blueprint $table) {
+        Schema::create('face_embeddings', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_prodi','10');
-            $table->char('jenjang','3');
-            $table->string('nama_prodi','100');
+            $table->foreignId('mahasiswa_id')->constrained('mahasiswa')->onDelete('cascade');
+            $table->longText('embedding');  
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prodi');
+        Schema::dropIfExists('face_embeddings');
     }
 };

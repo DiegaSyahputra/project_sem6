@@ -6,8 +6,27 @@ $("[data-validate]").on("input", function () {
     const entity = $(this).data("validate");
     const editId = $("#edit_id").val();
 
+    // $.post({
+    //     url: `/admin/validate-field/${entity}`,
+    //     method: "POST",
+    //     data: {
+    //         field: field,
+    //         value: value,
+    //         id: editId,
+    //         _token: $('meta[name="csrf-token"]').attr("content"),
+    //     },
+    //     success: function () {
+    //         $(errorSelector).text("");
+    //     },
+    //     error: function (xhr) {
+    //         if (xhr.status === 422) {
+    //             $(errorSelector).text(xhr.responseJSON.error);
+    //         }
+    //     },
+    // });
+
     $.post({
-        url: `/admin/validate-field/${entity}`,
+        url: `/mahasiswa/validate-field/${entity}`,
         method: "POST",
         data: {
             field: field,

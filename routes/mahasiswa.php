@@ -12,6 +12,9 @@ Route::middleware(['auth', 'role:mahasiswa'])->prefix('mahasiswa')->name('mahasi
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
 
     Route::get('/presensi/izin', [PresensiController::class, 'izin'])->name('presensi.izin');
+    Route::post('/presensi/izin', [PresensiController::class, 'store'])->name('presensi.izin.store');
+    Route::post('/validate-field/surat', [PresensiController::class, 'validateField'])->name('mahasiswa.validate.field.surat');
+
 
     Route::get('/jadwal',[JadwalController::class,'index'])->name('jadwal');
     Route::get('/jadwal/export/pdf', [JadwalController::class, 'exportJadwalPdf'])->name('export.jadwal.pdf');
@@ -26,4 +29,8 @@ Route::middleware(['auth', 'role:mahasiswa'])->prefix('mahasiswa')->name('mahasi
     Route::get('/change-password', [PasswordController::class, 'changePassword'])->name('change-password');
     Route::put('/change-password', [PasswordController::class, 'update'])->name('password.update');
     Route::put('/update-profil', [MahasiswaController::class, 'updateProfil'])->name('profil.update');
+
+    // Route::prefix('penjualan')->name('presensi.')->group(function () {
+
+    // });
 });

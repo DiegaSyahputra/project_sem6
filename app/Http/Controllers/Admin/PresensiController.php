@@ -11,7 +11,9 @@ use App\Models\Matkul;
 use App\Models\Pertemuan;
 use App\Models\Prodi;
 use App\Models\Ruangan;
+use App\Models\Surat;
 use App\Models\TahunAjaran;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Presensi;
@@ -144,7 +146,18 @@ class PresensiController extends Controller
         $title = 'Detail Data Perkuliahan';
         $presensi = Presensi::with('dosen','pertemuan.prodi','ruangan','pertemuan.matkul','pertemuan.tahun')->findOrFail($id);
         $detail = DetailPresensi::with('mahasiswa')->where('presensi_id', $id)->get();
-        return view('admin.info-presensi', compact('title','presensi','detail'));
+
+        $mahasiswaIds = $detail->pluck('mahasiswa_id');
+
+        // Query yang benar — cari surat pending yang rentang tglnya mencakup tgl_presensi ini
+        $suratPending = Surat::where('status', 'pending')
+            ->whereIn('mahasiswa_id', $mahasiswaIds)
+            ->where('tgl_mulai', '<=', $presensi->tgl_presensi)
+            ->where('tgl_selesai', '>=', $presensi->tgl_presensi)
+            ->get()
+            ->keyBy('mahasiswa_id');
+
+        return view('admin.info-presensi', compact('title','presensi','detail','suratPending'));
     }
 
     public function update(UpdatePresensi $request, $id){
@@ -269,6 +282,47 @@ class PresensiController extends Controller
                     'waktu_presensi' => $request['status'] == 1 ? now() : null,
                     'alasan' => $request['alasan'],
                 ]);
+
+                // if ($request->filled('surat_sakit_id')) {
+                //     $statusSurat = in_array($request->status, [2, 3]) ? 'disetujui' : 'ditolak';
+
+                //     Surat::where('id', $request->surat_sakit_id)
+                //         ->update([
+                //             'status'              => $statusSurat,
+                //             'dikonfirmasi_oleh'   => auth()->id(),
+                //             'dikonfirmasi_at'     => now(),
+                //             'catatan_konfirmator' => $request->alasan,
+                //         ]);
+                // }
+
+
+                // Di dalam updateDetailPresensi, setelah update surat_sakits
+                if ($request->filled('surat_sakit_id')) {
+                    $surat = Surat::findOrFail($request->surat_sakit_id);
+                    $statusSurat = in_array($request->status, [2, 3]) ? 'disetujui' : 'ditolak';
+
+                        $surat->update([
+                            'status'              => $statusSurat,
+                            'dikonfirmasi_oleh'   => auth()->id(),
+                            'dikonfirmasi_at'     => now(),
+                            'catatan_konfirmator' => $request->alasan,
+                        ]);
+
+                    // Jika ditolak, kembalikan semua presensi pending milik mahasiswa ini ke alpha
+                    if ($statusSurat === 'ditolak') {
+                        $surat = Surat::find($request->surat_sakit_id);
+
+                        $presensiIds = Presensi::whereBetween('tgl_presensi', [
+                            $surat->tgl_mulai,
+                            $surat->tgl_selesai,
+                        ])->pluck('id');
+
+                        DetailPresensi::whereIn('presensi_id', $presensiIds)
+                            ->where('mahasiswa_id', $surat->mahasiswa_id)
+                            ->where('status', 4) // hanya yang masih pending
+                            ->update(['status' => 0]); // kembalikan ke alpha
+                    }
+                }
 
             return redirect()->route('admin.presensi.show',$request['presensi_id'])->with([
                 'status' => 'success',

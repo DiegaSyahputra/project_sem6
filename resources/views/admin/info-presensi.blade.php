@@ -150,6 +150,8 @@
                                 <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
                                     {{ $dp->alasan ?? '-' }}</td>
                                 <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center">
+                                    @php $surat = $suratPending[$dp->mahasiswa_id] ?? null; @endphp
+
                                     <div x-data="{ openEdit: false, openConfirm: false, status: '{{ $dp->status }}', defaultStatus: '{{ $dp->status }}', alasan: '{{ $dp->alasan ?? '' }}', defaultAlasan: '{{ $dp->alasan ?? '' }}' }" class="flex justify-center gap-2"
                                         x-init="openEdit = false, alasan = defaultAlasan">
                                         <button @click="openEdit = !openEdit;"
@@ -157,14 +159,14 @@
                                             <i class="bi bi-pencil-square text-lg"></i>
                                         </button>
 
-                                        @if ($dp->status == 4)
+                                        @if ($dp->status == 4 && $surat)
                                             <button @click="openConfirm = true"
                                                 class="cursor-pointer px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-md"
-                                                title="Konfirmasi Izin">
+                                                title="Konfirmasi Surat">
                                                 <i class="bi bi-check-circle text-lg"></i>
                                             </button>
                                         @endif
-                                        
+
                                         <form action="{{ route('admin.update-detail-presensi') }}" method="post">
                                             @csrf
                                             <input type="hidden" name="mahasiswa_id" value="{{ $dp->mahasiswa_id }}">
@@ -242,77 +244,176 @@
                                             </div>
                                         </form>
 
-                                        <div x-show="openConfirm" x-cloak x-transition
-                                            class="fixed inset-0 z-50 flex justify-center items-center">
-                                            <div class="absolute inset-0 bg-black opacity-50"></div>
-                                            <div @click.outside="openConfirm = false"
-                                                class="relative z-10 bg-white dark:bg-gray-900 rounded-lg shadow-2xl w-[90%] max-w-lg p-6 text-left">
-                                                <div class="flex justify-between items-center mb-4">
-                                                    <h2 class="text-xl font-bold dark:text-white">Konfirmasi Surat Izin
-                                                    </h2>
-                                                    <button @click="openConfirm = false" class="text-gray-500"><i
-                                                            class="bi bi-x-lg"></i></button>
-                                                </div>
+                                        @if ($surat)
+                                            <div x-show="openConfirm" x-cloak x-transition
+                                                class="fixed inset-0 z-50 flex justify-center items-center">
+                                                <div class="absolute inset-0 bg-black opacity-50"></div>
+                                                <div @click.outside="openConfirm = false"
+                                                    class="relative z-10 bg-white dark:bg-gray-900 rounded-lg shadow-2xl w-[90%] max-w-lg p-6 text-left">
 
-                                                <div class="mb-4">
-                                                    <p
-                                                        class="text-sm font-semibold text-gray-600 dark:text-gray-400 italic mb-1">
-                                                        Bukti Surat Izin (Preview):</p>
-
-                                                    <div
-                                                        class="mt-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-gray-50 shadow-inner flex justify-center items-center">
-                                                        <img src="https://picsum.photos/seed/surat/500/600"
-                                                            class="max-h-64 w-auto object-contain shadow-md"
-                                                            alt="Preview Surat Izin"
-                                                            onerror="this.onerror=null; this.src='https://via.placeholder.com/500x600?text=Gambar+Gagal+Dimuat';">
+                                                    <div class="flex justify-between items-center mb-4">
+                                                        <h2 class="text-xl font-bold dark:text-white">Konfirmasi Surat
+                                                            {{ ucfirst($surat->jenis) }}</h2>
+                                                        <button @click="openConfirm = false" class="text-gray-500">
+                                                            <i class="bi bi-x-lg"></i>
+                                                        </button>
                                                     </div>
 
-                                                    <a href="https://picsum.photos/seed/surat/500/600" target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        class="block mt-3 text-blue-600 hover:underline text-sm text-center font-bold">
-                                                        <i class="bi bi-box-arrow-up-right mr-1"></i> Lihat Full
-                                                        Dokumen
-                                                    </a>
-                                                </div>
+                                                    {{-- Info rentang tanggal surat --}}
+                                                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                                                        Rentang: <strong>{{ $surat->tgl_mulai }}</strong> s/d
+                                                        <strong>{{ $surat->tgl_selesai }}</strong>
+                                                    </p>
 
-                                                <form action="{{ route('admin.update-detail-presensi') }}"
-                                                    method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="mahasiswa_id"
-                                                        value="{{ $dp->mahasiswa_id }}">
-                                                    <input type="hidden" name="presensi_id"
-                                                        value="{{ $dp->presensi_id }}">
-
+                                                    {{-- Preview foto surat dari storage --}}
                                                     <div class="mb-4">
-                                                        <label
-                                                            class="block text-sm font-semibold dark:text-white mb-1">Setujui
-                                                            Sebagai:</label>
-                                                        <select name="status" required
-                                                            class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md">
-                                                            <option value="2">Izin (Disetujui)</option>
-                                                            <option value="3">Sakit (Disetujui)</option>
-                                                            <option value="0">Tolak (Alpha)</option>
-                                                        </select>
+                                                        <p
+                                                            class="text-sm font-semibold text-gray-600 dark:text-gray-400 italic mb-1">
+                                                            Bukti Surat (Preview):
+                                                        </p>
+                                                        <div
+                                                            class="mt-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-gray-50 shadow-inner flex justify-center items-center">
+                                                            @php
+                                                                $ext = pathinfo($surat->foto_surat, PATHINFO_EXTENSION);
+                                                            @endphp
+
+                                                            @if (in_array(strtolower($ext), ['jpg', 'jpeg', 'png']))
+                                                                <img src="{{ asset('storage/' . $surat->foto_surat) }}"
+                                                                    class="max-h-64 w-auto object-contain shadow-md"
+                                                                    alt="Preview Surat"
+                                                                    onerror="this.onerror=null; this.src='https://via.placeholder.com/500x300?text=Gambar+Gagal+Dimuat';">
+                                                            @else
+                                                                {{-- Jika PDF, tampilkan icon saja --}}
+                                                                <div class="py-10 text-center text-gray-500">
+                                                                    <i
+                                                                        class="bi bi-file-earmark-pdf text-5xl text-red-500"></i>
+                                                                    <p class="mt-2 text-sm">File PDF</p>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+
+                                                        <a href="{{ asset('storage/' . $surat->foto_surat) }}"
+                                                            target="_blank"
+                                                            class="block mt-3 text-blue-600 hover:underline text-sm text-center font-bold">
+                                                            <i class="bi bi-box-arrow-up-right mr-1"></i> Lihat Full
+                                                            Dokumen
+                                                        </a>
                                                     </div>
 
-                                                    <div class="mb-4">
-                                                        <label
-                                                            class="block text-sm font-semibold dark:text-white mb-1">Catatan/Alasan
-                                                            (Opsional)
-                                                            :</label>
-                                                        <textarea name="alasan" rows="2" class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md">{{ $dp->alasan }}</textarea>
-                                                    </div>
+                                                    <form action="{{ route('admin.update-detail-presensi') }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="mahasiswa_id"
+                                                            value="{{ $dp->mahasiswa_id }}">
+                                                        <input type="hidden" name="presensi_id"
+                                                            value="{{ $dp->presensi_id }}">
+                                                        <input type="hidden" name="surat_sakit_id"
+                                                            value="{{ $surat->id }}">
 
-                                                    <div class="flex justify-end gap-2">
-                                                        <button type="button" @click="openConfirm = false"
-                                                            class="px-4 py-2 bg-gray-500 text-white rounded-md text-sm">Batal</button>
-                                                        <button type="submit"
-                                                            class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-bold">Setujui
-                                                            & Perbarui</button>
-                                                    </div>
-                                                </form>
+                                                        <div class="mb-4">
+                                                            <label
+                                                                class="block text-sm font-semibold dark:text-white mb-1">Setujui
+                                                                Sebagai:</label>
+                                                            <select name="status" required
+                                                                class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md">
+                                                                <option value="2">Izin (Disetujui)</option>
+                                                                <option value="3">Sakit (Disetujui)</option>
+                                                                <option value="0">Tolak (Alpha)</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="mb-4">
+                                                            <label
+                                                                class="block text-sm font-semibold dark:text-white mb-1">
+                                                                Catatan (Opsional):
+                                                            </label>
+                                                            <textarea name="alasan" rows="2" class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md">{{ $surat->keterangan }}</textarea>
+                                                        </div>
+
+                                                        <div class="flex justify-end gap-2">
+                                                            <button type="button" @click="openConfirm = false"
+                                                                class="px-4 py-2 bg-gray-500 text-white rounded-md text-sm">Batal</button>
+                                                            <button type="submit"
+                                                                class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-bold">
+                                                                Setujui & Perbarui
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
+
+                                            {{-- <div x-show="openConfirm" x-cloak x-transition
+                                                class="fixed inset-0 z-50 flex justify-center items-center">
+                                                <div class="absolute inset-0 bg-black opacity-50"></div>
+                                                <div @click.outside="openConfirm = false"
+                                                    class="relative z-10 bg-white dark:bg-gray-900 rounded-lg shadow-2xl w-[90%] max-w-lg p-6 text-left">
+                                                    <div class="flex justify-between items-center mb-4">
+                                                        <h2 class="text-xl font-bold dark:text-white">Konfirmasi Surat Izin
+                                                        </h2>
+                                                        <button @click="openConfirm = false" class="text-gray-500"><i
+                                                                class="bi bi-x-lg"></i></button>
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <p
+                                                            class="text-sm font-semibold text-gray-600 dark:text-gray-400 italic mb-1">
+                                                            Bukti Surat Izin (Preview):</p>
+
+                                                        <div
+                                                            class="mt-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-gray-50 shadow-inner flex justify-center items-center">
+                                                            <img src="https://picsum.photos/seed/surat/500/600"
+                                                                class="max-h-64 w-auto object-contain shadow-md"
+                                                                alt="Preview Surat Izin"
+                                                                onerror="this.onerror=null; this.src='https://via.placeholder.com/500x600?text=Gambar+Gagal+Dimuat';">
+                                                        </div>
+
+                                                        <a href="https://picsum.photos/seed/surat/500/600" target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            class="block mt-3 text-blue-600 hover:underline text-sm text-center font-bold">
+                                                            <i class="bi bi-box-arrow-up-right mr-1"></i> Lihat Full
+                                                            Dokumen
+                                                        </a>
+                                                    </div>
+
+                                                    <form action="{{ route('admin.update-detail-presensi') }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="mahasiswa_id"
+                                                            value="{{ $dp->mahasiswa_id }}">
+                                                        <input type="hidden" name="presensi_id"
+                                                            value="{{ $dp->presensi_id }}">
+
+                                                        <div class="mb-4">
+                                                            <label
+                                                                class="block text-sm font-semibold dark:text-white mb-1">Setujui
+                                                                Sebagai:</label>
+                                                            <select name="status" required
+                                                                class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md">
+                                                                <option value="2">Izin (Disetujui)</option>
+                                                                <option value="3">Sakit (Disetujui)</option>
+                                                                <option value="0">Tolak (Alpha)</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="mb-4">
+                                                            <label
+                                                                class="block text-sm font-semibold dark:text-white mb-1">Catatan/Alasan
+                                                                (Opsional)
+                                                                :</label>
+                                                            <textarea name="alasan" rows="2" class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md">{{ $dp->alasan }}</textarea>
+                                                        </div>
+
+                                                        <div class="flex justify-end gap-2">
+                                                            <button type="button" @click="openConfirm = false"
+                                                                class="px-4 py-2 bg-gray-500 text-white rounded-md text-sm">Batal</button>
+                                                            <button type="submit"
+                                                                class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-bold">Setujui
+                                                                & Perbarui</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div> --}}
 
                                     </div>
                                 </td>
