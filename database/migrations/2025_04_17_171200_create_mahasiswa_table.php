@@ -24,9 +24,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('no_telp','20');
             $table->string('alamat');
-            $table->foreignId('prodi_id')->constrained('prodis');
+            $table->foreignId('prodi_id')->constrained('prodi');
             $table->year('tahun_masuk');
-            $table->foreignId('tahun_ajaran_id')->constrained('tahun_ajarans');
+            $table->foreignId('tahun_ajaran_id')->constrained('tahun_ajaran');
             $table->tinyInteger('semester');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('foto','100')->nullable();

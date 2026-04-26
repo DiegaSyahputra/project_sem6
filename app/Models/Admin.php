@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 class Admin extends Model
 {
+    protected $table = 'admin';
+
     use HasFactory, Notifiable;
     protected $fillable = [
         'user_id',

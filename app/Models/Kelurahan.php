@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kelurahan extends Model
 {
-    protected $table = 'kelurahans'; // pastikan tabelnya
+    protected $table = 'kelurahan'; // pastikan tabelnya
 
     public function kecamatan()
     {
-        return $this->belongsTo(Kecamatan::class, 'kecamatan_id'); 
+        return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
     }
 
     public function provinsi()

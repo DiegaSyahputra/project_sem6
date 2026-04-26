@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->text('message');
             $table->enum('type', ['presensiBerhasil', 'presensiGagal', 'presensiAkanHabis', 'pengumuman']); // bisa ditambah jika ada jenis lain
@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('tanggal');
             $table->string('jam');
             $table->string('mata_kuliah')->nullable();
-            $table->foreignId('presensi_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('presensi_id')->nullable()->constrained('presensi')->onDelete('set null');
             $table->timestamps();
         });
     }

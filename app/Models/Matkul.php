@@ -10,6 +10,8 @@ use Illuminate\Notifications\Notifiable;
 
 class Matkul extends Model
 {
+    protected $table = 'matkul';
+
     use HasFactory, Notifiable;
     protected $fillable = [
         'kode_matkul',

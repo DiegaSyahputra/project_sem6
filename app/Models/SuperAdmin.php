@@ -8,6 +8,8 @@ use Illuminate\Notifications\Notifiable;
 
 class SuperAdmin extends Model
 {
+    protected $table = 'super_admin';
+
     use HasFactory, Notifiable;
     protected $fillable = [
         'user_id',

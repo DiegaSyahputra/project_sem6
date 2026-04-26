@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('face_embeddings', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('mahasiswa_id')->constrained('mahasiswa')->onDelete('cascade');
-            $table->longText('embedding');  
-            $table->timestamps();
+        Schema::create('detail_jadwal', function (Blueprint $table) {
+            $table->foreignId('jadwal_id')->constrained('jadwal');
+            $table->foreignId('mahasiswa_id')->constrained('mahasiswa');
         });
     }
 
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('face_embeddings');
+        Schema::dropIfExists('detail_jadwal');
     }
 };

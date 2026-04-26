@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kecamatan extends Model
 {
+    protected $table = 'kecamatan';
+
     public $timestamps = false;
     public $incrementing = false;
     protected $fillable = ['id', 'kota_id', 'name'];

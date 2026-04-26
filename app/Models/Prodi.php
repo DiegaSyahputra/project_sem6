@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 
 class Prodi extends Model
 {
+    protected $table = 'prodi';
+
     use HasFactory, Notifiable;
 
     protected $fillable = [

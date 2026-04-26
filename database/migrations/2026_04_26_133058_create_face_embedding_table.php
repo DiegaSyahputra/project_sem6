@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lokasis ', function (Blueprint $table) {
+        Schema::create('face_embedding', function (Blueprint $table) {
             $table->id();
-            $table->string('nama',100);
-            $table->decimal('latitude', 10, 6);
-            $table->decimal('longitude', 10, 6);
-            $table->boolean('is_active');
+            $table->foreignId('mahasiswa_id')->constrained('mahasiswa')->onDelete('cascade');
+            $table->longText('embedding');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lokasis');
+        Schema::dropIfExists('face_embedding');
     }
 };

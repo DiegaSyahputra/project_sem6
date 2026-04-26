@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('kode_matkul','15')->unique();
             $table->string('nama_matkul','100');
-            $table->foreignId('tahun_ajaran_id')->constrained('tahun_ajarans');
+            $table->foreignId('tahun_ajaran_id')->constrained('tahun_ajaran');
             $table->tinyInteger('semester');
             $table->char('durasi_matkul','2');
-            $table->foreignId('prodi_id')->constrained('prodis');
+            $table->foreignId('prodi_id')->constrained('prodi');
             $table->timestamps();
         });
     }

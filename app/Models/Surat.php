@@ -10,6 +10,8 @@ use Illuminate\Notifications\Notifiable;
 
 class Surat extends Model
 {
+    protected $table = 'surat';
+
     // protected $table = 'surat';
     use HasFactory, Notifiable;
     protected $fillable = [

@@ -8,6 +8,8 @@ use Illuminate\Notifications\Notifiable;
 
 class DetailPresensi extends Model
 {
+    protected $table = 'detail_presensi';
+
     use HasFactory, Notifiable;
 
     protected $fillable = [

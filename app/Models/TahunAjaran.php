@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TahunAjaran extends Model
 {
+    protected $table = 'tahun_ajaran';
+
     use HasFactory, Notifiable;
 
     protected $fillable = [
