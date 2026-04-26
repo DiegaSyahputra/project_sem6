@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('lokasi', function (Blueprint $table) {
             $table->id();
             $table->string('nama',100);
-            $table->decimal('latitude', 10, 6);
-            $table->decimal('longitude', 10, 6);
-            $table->boolean('is_active');
+            $table->decimal('latitude', 11, 8);
+            $table->decimal('longitude', 11, 8);
+            $table->double('radius')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
