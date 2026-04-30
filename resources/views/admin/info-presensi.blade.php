@@ -366,9 +366,9 @@
                                                                 Sebagai:</label>
                                                             <select name="status" required
                                                                 class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md">
-                                                                <option value="2">Izin (Disetujui)</option>
-                                                                <option value="3">Sakit (Disetujui)</option>
-                                                                <option value="0">Tolak (Alpha)</option>
+                                                                <option value="2">Izin</option>
+                                                                <option value="3">Sakit</option>
+                                                                <option value="0">Tolak</option>
                                                             </select>
                                                         </div>
 
@@ -393,7 +393,7 @@
                                             </div>
                                         @endif
 
-                                            {{-- <div x-show="openConfirm" x-cloak x-transition
+                                        {{-- <div x-show="openConfirm" x-cloak x-transition
                                                 class="fixed inset-0 z-50 flex justify-center items-center">
                                                 <div class="absolute inset-0 bg-black opacity-50"></div>
                                                 <div @click.outside="openConfirm = false"
