@@ -27,9 +27,9 @@ class StoreMasterProdi extends FormRequest
         $id = $id ?? $this->route('master_prodi');
 
         return [
-            'kode_prodi' => ['required','max:10','regex:/^[A-Za-z0-9]+$/',Rule::unique('prodis', 'kode_prodi')->ignore($id)],
+            'kode_prodi' => ['required','max:10','regex:/^[A-Za-z0-9]+$/',Rule::unique('prodi', 'kode_prodi')->ignore($id)],
             'jenjang' => 'required',
-            'nama_prodi' => ['required','max:40',Rule::unique('prodis', 'nama_prodi')->ignore($id),],
+            'nama_prodi' => ['required','max:40',Rule::unique('prodi', 'nama_prodi')->ignore($id),],
         ];
     }
 

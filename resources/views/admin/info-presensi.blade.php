@@ -95,6 +95,56 @@
                 </table>
             </div>
 
+            {{-- <h1 class="mb-2 text-2xl font-semibold text-gray-700 dark:text-white">Dosen Pengajar</h1>
+            <input type="hidden" id="presensi-id" value="{{ $presensi->id }}">
+            <div class="overflow-x-auto w-[340px] sm:w-150 md:w-full mt-3 pb-3">
+                <table id="detail-presensi" class="text-sm text-left min-w-full pt-2 text-gray-800 dark:text-gray-100"
+                    width="100%">
+                    <thead class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-100 sticky top-0 z-10">
+                        <tr>
+                            <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Dosen Pengajar</th>
+                            <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Status</th>
+                            <th class="border border-gray-300 dark:border-gray-600 px-4 py-2">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->dosen->nama ?? '-' }}</td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center">
+                                @switch($presensi->pertemuan->status)
+                                    @case('aktif')
+                                        <span
+                                            class="inline-block px-3 py-1 text-sm font-semibold text-white bg-green-500 rounded-full">Aktif</span>
+                                    @break
+
+                                    @case('uts')
+                                        <span
+                                            class="inline-block px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">UTS</span>
+                                    @break
+
+                                    @case('uas')
+                                        <span
+                                            class="inline-block px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">UAS</span>
+                                    @break
+
+                                    @case('libur')
+                                        <span
+                                            class="inline-block px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">Libur</span>
+                                    @break
+
+                                    @default
+                                        <span
+                                            class="inline-block px-3 py-1 text-sm font-semibold text-white bg-gray-500 rounded-full">-</span>
+                                @endswitch
+                            </td>
+                            <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                                {{ $presensi->link_zoom ? 'Daring' : 'Luring' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> --}}
+
             <h1 class="mb-2 mt-6 text-2xl font-semibold text-gray-700 dark:text-white">Mahasiswa</h1>
             <div class="overflow-x-auto w-[270px] sm:w-150 md:w-full mt-3 pb-3">
                 <table id="detail-mahasiswa"

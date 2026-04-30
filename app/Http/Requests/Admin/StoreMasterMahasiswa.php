@@ -27,14 +27,14 @@ class StoreMasterMahasiswa extends FormRequest
         $id = $id ?? $this->route('master_mahasiswa');
 
         $rules = [
-            'nim' => ['required', 'max:10','min:8', Rule::unique('mahasiswas', 'nim')->ignore($id),],
+            'nim' => ['required', 'max:10','min:8', Rule::unique('mahasiswa', 'nim')->ignore($id),],
             'nama' => 'required|max:100|regex:/^[A-Za-z\s]+$/',
             'jenis_kelamin' => 'required',
             'agama' => 'required',
             'tempat_lahir' => 'required|max:100|regex:/^[A-Za-z\s]+$/',
             'tgl_lahir' => 'required|before:today',
             'no_telp' => 'required|max:20|regex:/^[0-9]+$/',
-            'email' => ['required','email','max:100',Rule::unique('mahasiswas', 'email')->ignore($id),],
+            'email' => ['required','email','max:100',Rule::unique('mahasiswa', 'email')->ignore($id),],
             'alamat' => 'required|max:200',
             'prodi_id' => 'required',
             'tahun_masuk' => 'required|max:4|regex:/^[0-9]+$/',
@@ -44,7 +44,7 @@ class StoreMasterMahasiswa extends FormRequest
             'kota_id' => 'required',
             'kecamatan_id' => 'required',
             'kelurahan_id' => 'required',
-            'rfid' => ['nullable',Rule::unique('mahasiswas','rfid')->ignore($id),]
+            'rfid' => ['nullable',Rule::unique('mahasiswa','rfid')->ignore($id),]
         ];
 
             if ($this->isMethod('put') || $this->isMethod('patch')) {

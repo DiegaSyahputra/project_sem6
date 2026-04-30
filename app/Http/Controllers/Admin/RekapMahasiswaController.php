@@ -44,12 +44,16 @@ class RekapMahasiswaController extends Controller
                 'totalPertemuan' => 16,
             ];
 
-            if ($request->isMethod('post')) {
+            // if ($request->isMethod('post')) {
+
+            //     $hasil = $service->getRekapMahasiswa($request->prodi, $request->semester, $request->matkul);
+            //     $data['rekap'] = $hasil['rekap'];
+            //     $data['totalPertemuan'] = $hasil['totalPertemuan'];
+            // }
 
                 $hasil = $service->getRekapMahasiswa($request->prodi, $request->semester, $request->matkul);
                 $data['rekap'] = $hasil['rekap'];
                 $data['totalPertemuan'] = $hasil['totalPertemuan'];
-            }
 
             $pdf = Pdf::loadView('admin.export.rekap-mahasiswa-pdf', $data)->setPaper('a4', 'landscape');
             return $pdf->download('Rekap Kehadiran Mahasiswa.pdf');
@@ -57,7 +61,7 @@ class RekapMahasiswaController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan: ' 
+                'message' => 'Terjadi kesalahan: '
             ]);
         }
 
