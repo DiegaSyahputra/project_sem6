@@ -27,14 +27,14 @@ class StoreMasterDosen extends FormRequest
         $id = $id ??  $this->route('master_dosen');
 
         $rules = [
-            'nip' => ['required', 'max:20','regex:/^[0-9]+$/', Rule::unique('dosens', 'nip')->ignore($id),],
+            'nip' => ['required', 'max:20','regex:/^[0-9]+$/', Rule::unique('dosen', 'nip')->ignore($id),],
             'nama' => 'required|max:100|regex:/^[A-Za-z\s]+$/',
             'jenis_kelamin' => 'required',
             'agama' => 'required',
             'tempat_lahir' => 'required|max:100|regex:/^[A-Za-z\s]+$/',
             'tgl_lahir' => 'required|before:today',
             'no_telp' => 'required|max:20|regex:/^[0-9]+$/',
-            'email' => ['required','email','max:100',Rule::unique('dosens', 'email')->ignore($id),],
+            'email' => ['required','email','max:100',Rule::unique('dosen', 'email')->ignore($id),],
             'alamat' => 'required|max:200',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'provinsi_id' => 'required',

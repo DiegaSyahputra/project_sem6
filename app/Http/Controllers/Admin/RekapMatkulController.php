@@ -43,11 +43,9 @@ class RekapMatkulController extends Controller
                 'rekap' => [],
             ];
 
-            if ($request->isMethod('post')) {
 
                 $hasil = $service->getRekapMatkul($request->prodi, $request->semester, $request->matkul);
                 $data['rekap'] = $hasil['rekap'];
-            }
 
             $pdf = Pdf::loadView('admin.export.rekap-matkul-pdf', $data)->setPaper('a4', 'landscape');
             return $pdf->download('Rekap Kehadiran Per Mata Kuliah.pdf');
@@ -55,7 +53,7 @@ class RekapMatkulController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan: ' 
+                'message' => 'Terjadi kesalahan: '
             ]);
         }
     }

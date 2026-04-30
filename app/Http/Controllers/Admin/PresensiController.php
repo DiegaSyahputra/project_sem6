@@ -119,10 +119,6 @@ class PresensiController extends Controller
                 return true;
             });
 
-            if ($result !== true) {
-                return $result;
-            }
-
             return redirect()->route('admin.presensi.index')->with([
                 'status' => 'success',
                 'message' => 'Data Berhasil Ditambahkan'
@@ -238,10 +234,6 @@ class PresensiController extends Controller
                 return true;
             });
 
-            if ($result !== true) {
-                return $result;
-            }
-
             return redirect()->route('admin.presensi.index')->with([
                 'status' => 'success',
                 'message' => 'Data Berhasil Ditambahkan'
@@ -283,18 +275,6 @@ class PresensiController extends Controller
                     'alasan' => $request['alasan'],
                 ]);
 
-                // if ($request->filled('surat_sakit_id')) {
-                //     $statusSurat = in_array($request->status, [2, 3]) ? 'disetujui' : 'ditolak';
-
-                //     Surat::where('id', $request->surat_sakit_id)
-                //         ->update([
-                //             'status'              => $statusSurat,
-                //             'dikonfirmasi_oleh'   => auth()->id(),
-                //             'dikonfirmasi_at'     => now(),
-                //             'catatan_konfirmator' => $request->alasan,
-                //         ]);
-                // }
-
 
                 // Di dalam updateDetailPresensi, setelah update surat_sakits
                 if ($request->filled('surat_sakit_id')) {
@@ -310,8 +290,6 @@ class PresensiController extends Controller
 
                     // Jika ditolak, kembalikan semua presensi pending milik mahasiswa ini ke alpha
                     if ($statusSurat === 'ditolak') {
-                        $surat = Surat::find($request->surat_sakit_id);
-
                         $presensiIds = Presensi::whereBetween('tgl_presensi', [
                             $surat->tgl_mulai,
                             $surat->tgl_selesai,
@@ -390,7 +368,8 @@ class PresensiController extends Controller
 
     public function getStatusPresensi($id)
     {
-        $status = DetailPresensi::where('presensi_id', $id)
+        $presensi = Presensi::findOrFail($id);
+        $status = DetailPresensi::where('presensi_id', $presensi->id)
             ->get(['mahasiswa_id', 'status', 'waktu_presensi']);
 
         return response()->json($status);
@@ -413,32 +392,4 @@ class PresensiController extends Controller
 
         return response()->json(['success' => true]);
     }
-
-    //  public function validateField(Request $request)
-    // {
-    //     $rules = (new StorePresensi())->rules();
-    //     $messages = (new StorePresensi())->messages();
-
-    //     $field = $request->input('field');  // ex: email atau inputs[0][jam_awal]
-    //     $value = $request->input('value');
-
-    //     // convert array-style name → dot notation
-    //     $dotField = str_replace(['[', ']'], ['.', ''], $field);
-
-    //     $validator = Validator::make(
-    //         [$dotField => $value],
-    //         [$dotField => $rules[$dotField] ?? ''],
-    //         $messages
-    //     );
-
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'error' => $validator->errors()->first($dotField)
-    //         ], 422);
-    //     }
-
-    //     return response()->json(['success' => true]);
-    // }
-
-
 }
