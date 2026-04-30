@@ -22,8 +22,8 @@ class PresenceContentController extends Controller
     {
         // Validasi input
         $request->validate([
-            'mahasiswa_id' => 'required|exists:mahasiswas,id',
-            'presensi_id' => 'required|exists:presensis,id',
+            'mahasiswa_id' => 'required|exists:mahasiswa,id',
+            'presensi_id' => 'required|exists:presensi,id',
             'status' => 'required|in:1,2,3,4', // sesuaikan range status valid
             'waktu_presensi' => 'required|date',
             'alasan' => 'nullable|string|max:255',
@@ -48,7 +48,7 @@ class PresenceContentController extends Controller
         }
 
         // Jalankan update data
-        $updated = DB::table('detail_presensis')
+        $updated = DB::table('detail_presensi')
             ->where('presensi_id', $request->presensi_id)
             ->where('mahasiswa_id', $request->mahasiswa_id)
             ->update($data);

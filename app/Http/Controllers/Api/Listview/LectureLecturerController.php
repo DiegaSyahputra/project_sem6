@@ -28,7 +28,7 @@ class LectureLecturerController extends Controller
 
         $data = $presensis->map(function ($item) {
             return [
-                'presensis_id' => $item->id,
+                'presensi_id' => $item->id,
                 'nama_matkul' => optional($item->pertemuan->matkul)->nama_matkul,
                 'durasi_presensi' => Carbon::parse($item->jam_awal)->format('H:i') . ' - ' . Carbon::parse($item->jam_akhir)->format('H:i'),
                 'link_zoom' => $item->link_zoom,
@@ -47,7 +47,7 @@ class LectureLecturerController extends Controller
 
     public function showLectureContent(Request $request)
     {
-        $presensisId = $request->query('presensis_id');
+        $presensisId = $request->query('presensi_id');
 
         $presensi = Presensi::with('pertemuan.matkul')
             ->whereDate('tgl_presensi', now()->toDateString())
@@ -67,7 +67,7 @@ class LectureLecturerController extends Controller
             'code' => 200,
             'message' => 'Data presensi online berhasil diambil',
             'data' => [
-                'presensis_id' => $presensi->id,
+                'presensi_id' => $presensi->id,
                 'nama_matkul' => optional($presensi->pertemuan->matkul)->nama_matkul,
                 'semester' => $presensi->pertemuan->semester,
                 'nama_dosen' => '', // bisa relasi
@@ -82,7 +82,7 @@ class LectureLecturerController extends Controller
     {
         $request->validate([
             'link_zoom' => 'required|string',
-            'presensis_id' => 'required|exists:presensis,id'
+            'presensi_id' => 'required|exists:presensi,id'
         ]);
 
         $presensi = Presensi::find($request->presensis_id);

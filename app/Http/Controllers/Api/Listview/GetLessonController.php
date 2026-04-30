@@ -64,7 +64,7 @@ class GetLessonController extends Controller
                 $durasiPresensi = $jamAwal . ' - ' . $jamAkhir;
 
                 return [
-                    'presensis_id' => $presensi->id,
+                    'presensi_id' => $presensi->id,
                     'nama_matkul' => $presensi->pertemuan?->matkul?->nama_matkul ?? null,
                     'durasi_matkul' => $presensi->pertemuan?->matkul?->durasi_matkul ?? null,
                     'kode_matkul' => $presensi->pertemuan?->matkul?->kode_matkul ?? null,
@@ -95,7 +95,7 @@ class GetLessonController extends Controller
     public function getLessonLecturer(Request $request)
     {
         $request->validate([
-            'dosen_id' => 'required|exists:dosens,id',
+            'dosen_id' => 'required|exists:dosen,id',
         ]);
 
         $jadwalHariIni = Presensi::with([
@@ -113,7 +113,7 @@ class GetLessonController extends Controller
             ->get()
             ->map(function ($presensi) {
                 return [
-                    'presensis_id' => $presensi->id,
+                    'presensi_id' => $presensi->id,
                     'presensi_id' => $presensi->presensi_id,
                     'nama_matkul' => $presensi->pertemuan->matkul->nama_matkul,
                     'kode_matkul' => $presensi->pertemuan->matkul->kode_matkul,

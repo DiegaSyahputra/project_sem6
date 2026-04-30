@@ -11,27 +11,27 @@ class AttendanceStudentController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'nim' => 'required|string|exists:mahasiswas,nim',
+            'nim' => 'required|string|exists:mahasiswa,nim',
         ]);
 
         $nim = $request->nim;
 
-        $rekap = DB::table('detail_presensis')
-            ->join('presensis', 'presensis.id', '=', 'detail_presensis.presensi_id')
-            ->join('pertemuans', 'pertemuans.id', '=', 'presensis.pertemuan_id')
-            ->join('matkuls', 'pertemuans.matkul_id', '=', 'matkuls.id')
-            ->join('mahasiswas', function ($join) {
-                $join->on('mahasiswas.id', '=', 'detail_presensis.mahasiswa_id')
-                    ->on('mahasiswas.semester', '=', 'matkuls.semester');
+        $rekap = DB::table('detail_presensi')
+            ->join('presensi', 'presensi.id', '=', 'detail_presensi.presensi_id')
+            ->join('pertemuan', 'pertemuan.id', '=', 'presensi.pertemuan_id')
+            ->join('matkul', 'pertemuan.matkul_id', '=', 'matkul.id')
+            ->join('mahasiswa', function ($join) {
+                $join->on('mahasiswa.id', '=', 'detail_presensi.mahasiswa_id')
+                    ->on('mahasiswa.semester', '=', 'matkul.semester');
             })
-            ->where('mahasiswas.nim', $nim)
+            ->where('mahasiswa.nim', $nim)
             ->select(
-                'detail_presensis.mahasiswa_id',
-                'mahasiswas.nim',
-                'matkuls.nama_matkul',
-                'matkuls.kode_matkul',
-                'detail_presensis.status',
-                'matkuls.semester'
+                'detail_presensi.mahasiswa_id',
+                'mahasiswa.nim',
+                'matkul.nama_matkul',
+                'matkul.kode_matkul',
+                'detail_presensi.status',
+                'matkul.semester'
             )
             ->get();
 

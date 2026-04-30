@@ -15,8 +15,8 @@ class UploadProfileController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'role' => 'required|in:dosen,mahasiswa',
-            'dosen_id' => 'required_if:role,dosen|nullable|exists:dosens,id',
-            'mahasiswa_id' => 'required_if:role,mahasiswa|nullable|exists:mahasiswas,id',
+            'dosen_id' => 'required_if:role,dosen|nullable|exists:dosen,id',
+            'mahasiswa_id' => 'required_if:role,mahasiswa|nullable|exists:mahasiswa,id',
             'file' => 'required|file|mimes:jpg,jpeg,png|max:2048',
         ], [
             'file.mimes' => 'File harus berupa JPG, JPEG, atau PNG.',

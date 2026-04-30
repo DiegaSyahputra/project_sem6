@@ -54,7 +54,7 @@ class PresenceController extends Controller
                 ->firstWhere('mahasiswa_id', $mahasiswaId);
 
             return [
-                'presensis_id' => $presensi->id,
+                'presensi_id' => $presensi->id,
                 'nim' => $detail?->mahasiswa?->nim,
                 'semester' => $detail?->mahasiswa?->semester,
                 'presensi_id' => $presensi->presensi_id,

@@ -13,7 +13,7 @@ class DetailPresenceLecturerController extends Controller
 {
     public function showHeader(Request $request)
     {
-        $presensiId = $request->query('presensis_id');
+        $presensiId = $request->query('presensi_id');
 
         if (!$presensiId) {
             return response()->json(['status' => 'error', 'message' => 'Presensi id tidak boleh kosong'], 400);
@@ -37,7 +37,7 @@ class DetailPresenceLecturerController extends Controller
     }
     public function showDetailPresence(Request $request)
     {
-        $presensiId = $request->query('presensis_id');
+        $presensiId = $request->query('presensi_id');
 
         if (!$presensiId) {
             return response()->json(['status' => 'error', 'message' => 'Presensi id tidak boleh kosong'], 400);
@@ -68,12 +68,12 @@ class DetailPresenceLecturerController extends Controller
     public function showDetailStudent(Request $request)
     {
         $nim = $request->query('nim');
-        $presensiId = $request->query('presensis_id');
+        $presensiId = $request->query('presensi_id');
 
         if (!$nim || !$presensiId) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'NIM dan presensis_id tidak boleh kosong'
+                'message' => 'NIM dan presensi_id tidak boleh kosong'
             ], 400);
         }
 
