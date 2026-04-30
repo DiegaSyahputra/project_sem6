@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 class Dosen extends Model
 {
+    protected $table = 'dosen';
+
     use HasFactory, Notifiable;
     protected $fillable = [
         'user_id',

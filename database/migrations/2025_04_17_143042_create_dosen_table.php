@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::create('dosen', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('nip','20')->unique();
@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('no_telp','20');
             $table->string('alamat');
+            $table->foreignId('prodi_id')->constrained('prodi');
             $table->string('foto','100')->nullable();
             $table->timestamps();
         });
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('dosen');
     }
 };

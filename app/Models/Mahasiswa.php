@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Storage;
 
 class Mahasiswa extends Model
 {
+    protected $table = 'mahasiswa';
+
     use HasFactory, Notifiable;
     protected $fillable = [
         'user_id',

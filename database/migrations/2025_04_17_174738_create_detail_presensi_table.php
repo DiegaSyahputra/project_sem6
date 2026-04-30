@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detail_presensis', function (Blueprint $table) {
-            $table->foreignId('presensi_id')->constrained('presensis');
-            $table->foreignId('mahasiswa_id')->constrained('mahasiswas');
+        Schema::create('detail_presensi', function (Blueprint $table) {
+            $table->foreignId('presensi_id')->constrained('presensi');
+            $table->foreignId('mahasiswa_id')->constrained('mahasiswa');
             $table->dateTime('waktu_presensi')->nullable();
             $table->boolean('status')->default(false);
             $table->string('alasan')->nullable();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('detail_presensis');
+        Schema::dropIfExists('detail_presensi');
     }
 };

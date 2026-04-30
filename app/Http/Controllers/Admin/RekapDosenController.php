@@ -42,12 +42,16 @@ class RekapDosenController extends Controller
                 'totalPertemuan' => 16,
             ];
 
-            if ($request->isMethod('post')) {
+            // if ($request->isMethod('post')) {
+
+            // $hasil = $service->getRekap($request->dosen, $request->tahun_ajaran);
+            //     $data['dataPresensi'] = $hasil['rekap'];
+            //     $data['totalPertemuan'] = $hasil['totalPertemuan'];
+            // }
 
             $hasil = $service->getRekap($request->dosen, $request->tahun_ajaran);
                 $data['dataPresensi'] = $hasil['rekap'];
                 $data['totalPertemuan'] = $hasil['totalPertemuan'];
-            }
 
             $pdf = Pdf::loadView('admin.export.rekap-dosen-pdf', $data)->setPaper('a4', 'landscape');
             return $pdf->download('Rekap Kehadiran Dosen.pdf');
@@ -55,7 +59,7 @@ class RekapDosenController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan: ' 
+                'message' => 'Terjadi kesalahan: '
             ]);
         }
     }
@@ -80,9 +84,10 @@ class RekapDosenController extends Controller
 
             public function view(): View
             {
+                $dosen = Dosen::find($this->dosenId);
                 return view('admin.export.rekap-dosen-excel', [
-                    'nip' => Dosen::find($this->dosenId)?->nip ?? '-',
-                    'nama' => Dosen::find($this->dosenId)?->nama ?? '-',
+                    'nip'  => $dosen?->nip ?? '-',
+                    'nama' => $dosen?->nama ?? '-',
                     'dataPresensi' => $this->rekapData['rekap'],
                     'totalPertemuan' => $this->rekapData['totalPertemuan'],
                 ]);

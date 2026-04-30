@@ -40,7 +40,7 @@ class StorePresensi extends FormRequest
             'inputs.*.pertemuan_ke' => ['required', $this->pertemuanRule()],
             'matkul_id' => [
                 'required',
-                Rule::exists('matkuls', 'id')->where(function ($query) {
+                Rule::exists('matkul', 'id')->where(function ($query) {
                     $query->where('prodi_id', $this->input('prodi_id'))
                         ->where('semester', $this->input('semester'));
                 }),

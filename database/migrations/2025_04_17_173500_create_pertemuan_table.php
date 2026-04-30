@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pertemuans', function (Blueprint $table) {
+        Schema::create('pertemuan', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('pertemuan_ke'); // 1-16
             $table->enum('status', ['aktif', 'libur', 'uts', 'uas'])->default('aktif');
             $table->enum('jenis', ['teori', 'praktik'])->nullable();
-            $table->foreignId('matkul_id')->constrained('matkuls');
-            $table->foreignId('prodi_id')->constrained('prodis');
+            $table->foreignId('matkul_id')->constrained('matkul');
+            $table->foreignId('prodi_id')->constrained('prodi');
             $table->tinyInteger('semester');
-            $table->foreignId('tahun_ajaran_id')->constrained('tahun_ajarans');
+            $table->foreignId('tahun_ajaran_id')->constrained('tahun_ajaran');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pertemuans');
+        Schema::dropIfExists('pertemuan');
     }
 };

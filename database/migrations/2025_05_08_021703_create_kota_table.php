@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kotas', function (Blueprint $table) {
+        Schema::create('kota', function (Blueprint $table) {
             $table->char('id', 4); // primary key
             $table->char('provinsi_id', 2); // foreign key ke provinces.id
             $table->string('name');
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('longitude', 10, 6)->nullable();
 
             $table->primary('id');
-            $table->foreign('provinsi_id')->references('id')->on('provinsis')->onDelete('cascade');
+            $table->foreign('provinsi_id')->references('id')->on('provinsi')->onDelete('cascade');
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kotas');
+        Schema::dropIfExists('kota');
     }
 };

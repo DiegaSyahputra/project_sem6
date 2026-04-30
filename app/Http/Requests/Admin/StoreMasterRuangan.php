@@ -27,7 +27,7 @@ class StoreMasterRuangan extends FormRequest
         $id = $id ?? $this->route('master_ruangan');
 
         return [
-            'nama_ruangan' => ['required','max:150',Rule::unique('ruangans', 'nama_ruangan')->ignore($id),],
+            'nama_ruangan' => ['required','max:150',Rule::unique('ruangan', 'nama_ruangan')->ignore($id),],
         ];
     }
 

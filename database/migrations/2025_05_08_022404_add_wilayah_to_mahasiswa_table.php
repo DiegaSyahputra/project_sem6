@@ -11,17 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('admins', function (Blueprint $table) {
+        Schema::table('mahasiswa', function (Blueprint $table) {
             $table->char('provinsi_id', 2); // ← pastikan ini ADA sebelum foreign()
             $table->char('kota_id', 4); // ← pastikan ini ADA sebelum foreign()
             $table->char('kecamatan_id', 7); // ← pastikan ini ADA sebelum foreign()
             $table->char('kelurahan_id', 10); // ← pastikan ini ADA sebelum foreign()
 
-
-            $table->foreign('provinsi_id')->references('id')->on('provinsis');
-            $table->foreign('kota_id')->references('id')->on('kotas');
-            $table->foreign('kecamatan_id')->references('id')->on('kecamatans');
-            $table->foreign('kelurahan_id')->references('id')->on('kelurahans');
+            $table->foreign('provinsi_id')->references('id')->on('provinsi');
+            $table->foreign('kota_id')->references('id')->on('kota');
+            $table->foreign('kecamatan_id')->references('id')->on('kecamatan');
+            $table->foreign('kelurahan_id')->references('id')->on('kelurahan');
         });
     }
 
@@ -30,7 +29,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('admins', function (Blueprint $table) {
+        Schema::table('mahasiswa', function (Blueprint $table) {
             //
         });
     }

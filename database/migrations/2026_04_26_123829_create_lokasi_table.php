@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prodi', function (Blueprint $table) {
+        Schema::create('lokasi', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_prodi','10');
-            $table->char('jenjang','3');
-            $table->string('nama_prodi','100');
+            $table->string('nama',100);
+            $table->decimal('latitude', 11, 8);
+            $table->decimal('longitude', 11, 8);
+            $table->double('radius')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prodi');
+        Schema::dropIfExists('lokasi');
     }
 };

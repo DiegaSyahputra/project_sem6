@@ -27,14 +27,14 @@ class StoreMasterAdmin extends FormRequest
         $id = $id ?? $this->route('master_admin');
 
         $rules = [
-            'nip' => ['required', 'max:20','regex:/^[0-9]+$/', Rule::unique('admins', 'nip')->ignore($id),],
+            'nip' => ['required', 'max:20','regex:/^[0-9]+$/', Rule::unique('admin', 'nip')->ignore($id),],
             'nama' => 'required|max:100|regex:/^[A-Za-z\s]+$/',
             'jenis_kelamin' => 'required',
             'agama' => 'required',
             'tempat_lahir' => 'required|max:100|regex:/^[A-Za-z\s]+$/',
             'tgl_lahir' => 'required|before:today',
             'no_telp' => 'required|max:20|regex:/^[0-9]+$/',
-            'email' => ['required','email:rfc','max:100',Rule::unique('admins', 'email')->ignore($id),],
+            'email' => ['required','email:rfc','max:100',Rule::unique('admin', 'email')->ignore($id),],
             'alamat' => 'required|max:200',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'kota_id' => 'required',

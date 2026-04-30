@@ -8,6 +8,8 @@ use Illuminate\Notifications\Notifiable;
 
 class Jadwal extends Model
 {
+    protected $table = 'jadwal';
+
     use HasFactory, Notifiable;
 
     protected $fillable = [

@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('provinsis', function (Blueprint $table) {
-            $table->char('id', 2); // atau bisa pakai varchar juga
+        Schema::create('kelurahan', function (Blueprint $table) {
+            $table->char('id', 10)->primary();
+            $table->char('kecamatan_id', 7);
             $table->string('name');
-            $table->string('alt_name')->nullable(); // tambah kolom alt_name
+            $table->string('alt_name')->nullable();
             $table->decimal('latitude', 10, 6)->nullable();
             $table->decimal('longitude', 10, 6)->nullable();
-            $table->primary('id');
+
+            $table->foreign('kecamatan_id')->references('id')->on('kecamatan')->onDelete('cascade');
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('provinsis');
+        Schema::dropIfExists('kelurahan');
     }
 };
