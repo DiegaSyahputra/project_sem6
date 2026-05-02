@@ -13,13 +13,14 @@ class Presensi extends Model
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'presensi_id',
+        'presensis_id',
         'pertemuan_id',
         'tgl_presensi',
         'jam_awal',
         'jam_akhir',
         'dosen_id',
         'ruangan_id',
+        'lokasi_id',
         'link_zoom'
     ];
 
@@ -27,6 +28,7 @@ class Presensi extends Model
         'pertemuan_id' => 'integer',
         'dosen_id' => 'integer',
         'ruangan_id' => 'integer',
+        'lokasi_id' => 'integer',
     ];
 
     public function detailPresensi()
@@ -62,5 +64,9 @@ class Presensi extends Model
     public function ruangan()
     {
         return $this->belongsTo(Ruangan::class, 'ruangan_id', 'id');
+    }
+    public function lokasi()
+    {
+        return $this->belongsTo(Lokasi::class, 'lokasi_id', 'id');
     }
 }
