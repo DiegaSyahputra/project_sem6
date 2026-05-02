@@ -72,7 +72,7 @@ class LectureLecturerController extends Controller
                 'semester' => $presensi->pertemuan->semester,
                 'nama_dosen' => '', // bisa relasi
                 'durasi_presensi' => Carbon::parse($presensi->jam_awal)->format('H:i') . ' - ' . Carbon::parse($presensi->jam_akhir)->format('H:i'),
-                'link_zoom' => $presensi->link_zoom,
+                'link_zoom' => $presensi->link_zoom ?? null,
                 'tgl_presensi' => Carbon::parse($presensi->tgl_presensi)->format('d-m-Y')
             ]
         ]);
@@ -86,7 +86,7 @@ class LectureLecturerController extends Controller
         ]);
 
         $presensi = Presensi::find($request->presensis_id);
-        $presensi->link_zoom = $request->link_zoom;
+        $presensi->link_zoom = $request->link_zoom ?? null;
 
         if ($presensi->save()) {
             return response()->json([

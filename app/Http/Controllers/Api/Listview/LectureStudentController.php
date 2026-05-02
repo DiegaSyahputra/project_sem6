@@ -29,12 +29,12 @@ class LectureStudentController extends Controller
                 ->get()
                 ->map(function ($item) {
                     return [
-                        '_id' => $item->presensi->id,
+                        'presensis_id' => $item->presensi->id,
                         'nama_matkul' => $item->presensi->pertemuan->matkul->nama_matkul,
                         'semester' => $item->presensi->pertemuan->semester,
                         'nama_dosen' => $item->presensi->dosen->nama,
                         'durasi_presensi' => date('H:i', strtotime($item->presensi->jam_awal)) . ' - ' . date('H:i', strtotime($item->presensi->jam_akhir)),
-                        'link_zoom' => $item->presensi->link_zoom,
+                        'link_zoom' => $item->presensi->link_zoom ?? null,
                         'tgl_presensi' => $item->presensi->tgl_presensi,
                     ];
                 });

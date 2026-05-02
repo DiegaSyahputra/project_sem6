@@ -32,7 +32,6 @@ class PresenceContentController extends Controller
 
         // Persiapkan data untuk update
         $data = [
-            'status' => $request->status,
             'alasan' => $request->alasan,
             'waktu_presensi' => $request->waktu_presensi,
         ];
