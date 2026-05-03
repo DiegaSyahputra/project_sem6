@@ -31,9 +31,10 @@ Route::middleware(['auth', 'role:dosen'])->prefix('dosen')->name('dosen.')->grou
     Route::post('/rekap-mahasiswa/export/pdf', [RekapMahasiswaController::class, 'exportPdf'])->name('export.mahasiswa.pdf');
     Route::post('/rekap-mahasiswa/export/excel', [RekapMahasiswaController::class, 'exportExcel'])->name('export.mahasiswa.excel');
 
-    Route::resource('presensi', PresensiController::class);
+    Route::get('/presensi/{id}/status', [PresensiController::class, 'getStatusPresensi'])->name('status-realtime');
     Route::post('/presensi/info-presensi', [PresensiController::class, 'updateDetailPresensi'])
     ->name('update-detail-presensi');
+    Route::resource('presensi', PresensiController::class);
 
     Route::post('/validate-field/presensi', [PresensiController::class, 'validateField'])->name('admin.validate.field.presensi');
 

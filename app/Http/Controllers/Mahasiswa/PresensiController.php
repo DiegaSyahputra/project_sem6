@@ -72,6 +72,8 @@ class PresensiController extends Controller
             $r->waktuPresensi = $detail->waktu_presensi ?? null;
             $statusPertemuan = strtolower($r->pertemuan->status ?? '');
 
+
+
             // Label & warna status presensi
             $statusMap = [
                 0 => ['label' => '❌ Alpha',                      'color' => 'text-red-600 dark:text-red-400'],
@@ -93,7 +95,8 @@ class PresensiController extends Controller
 
             // Cari surat terkait berdasarkan rentang tanggal
             $suratTerkait = $semuaSurat->first(function ($s) use ($r) {
-                return $s->tgl_mulai <= $r->tgl_presensi && $s->tgl_selesai >= $r->tgl_presensi;
+                return Carbon::parse($s->tgl)->isSameDay($r->tgl_presensi);
+                // return $s->tgl == $r->tgl_presensi;
             });
 
             // Keterangan surat
@@ -129,47 +132,33 @@ class PresensiController extends Controller
 
                 $mahasiswa = Mahasiswa::where('user_id', auth()->id())->firstOrFail();
 
-                // Cek duplikat pengajuan di rentang tanggal yang sama
-                // $sudahAda = Surat::where('mahasiswa_id', $mahasiswa->id)
-                //     ->whereIn('status', ['pending', 'disetujui'])
-                //     ->where(function ($q) use ($request) {
-                //         $q->whereBetween('tgl_mulai', [$request->tgl_mulai, $request->tgl_selesai])
-                //         ->orWhereBetween('tgl_selesai', [$request->tgl_mulai, $request->tgl_selesai]);
-                //     })->exists();
-
-                // if ($sudahAda) {
-                //     throw new \Exception('DUPLIKAT');
-                // }
-
                 // Simpan file
                 $fotoPath = $request->file('foto_surat')->store('surat_sakits', 'public');
 
                 // Simpan surat sakit
                 Surat::create([
-                    'mahasiswa_id'    => $mahasiswa->id,
-                    'jenis'           => $request->jenis,
-                    'tgl_mulai'   => $request->tgl_mulai,
-                    'tgl_selesai' => $request->tgl_selesai,
-                    'foto_surat'      => $fotoPath,
-                    'keterangan'      => $request->keterangan,
-                    'status'          => 'pending',
+                    'mahasiswa_id'      => $mahasiswa->id,
+                    'jenis'             => $request->jenis,
+                    'tgl'               => $request->tgl,
+                    'foto_surat'        => $fotoPath,
+                    'keterangan'        => $request->keterangan,
+                    'status'            => 'pending',
                 ]);
 
                 // Ambil semua presensi yang tanggalnya masuk rentang surat
-                $presensiIds = Presensi::whereBetween('tgl_presensi', [
-                    $request->tgl_mulai,
-                    $request->tgl_selesai,
-                ])->pluck('id');
+                $presensiIds = Presensi::whereDate('tgl_presensi',$request->tgl)->pluck('id');
 
                 // Update status detail presensi mahasiswa jadi pending (4)
                 // Hanya yang masih alpha (0), jangan timpa yang sudah hadir
-                DetailPresensi::whereIn('presensi_id', $presensiIds)
-                    ->where('mahasiswa_id', $mahasiswa->id)
-                    ->where('status', 0)
-                    ->update(['status' => 4]);
+                if ($presensiIds->isNotEmpty()) {
+                    DetailPresensi::whereIn('presensi_id', $presensiIds)
+                        ->where('mahasiswa_id', $mahasiswa->id)
+                        ->where('status', 0)
+                        ->update(['status' => 4]);
+                }
             });
 
-            return redirect()->back()->with([
+            return redirect()->route('mahasiswa.presensi')->with([
                 'status'  => 'success',
                 'message' => 'Pengajuan berhasil dikirim, menunggu konfirmasi dosen.'
             ]);
@@ -193,6 +182,27 @@ class PresensiController extends Controller
                 'message' => 'Terjadi kesalahan saat mengirim pengajuan.'
             ]);
         }
+    }
+
+    public function riwayatSurat()
+    {
+        $title = 'Riwayat Surat';
+        $mahasiswa = Auth::user()->mahasiswa;
+
+        $surats = Surat::where('mahasiswa_id', $mahasiswa->id)
+            ->orderByDesc('tgl')
+            ->get()
+            ->map(function ($s) {
+                $s->labelStatus = match($s->status) {
+                    'pending'   => ['label' => '⏳ Menunggu Konfirmasi', 'color' => 'text-orange-500'],
+                    'disetujui' => ['label' => '✅ Disetujui',           'color' => 'text-green-600'],
+                    'ditolak'   => ['label' => '❌ Ditolak',             'color' => 'text-red-600'],
+                    default     => ['label' => '-',                      'color' => 'text-gray-500'],
+                };
+                return $s;
+            });
+
+        return view('mahasiswa.riwayat-surat', compact('title', 'surats'));
     }
 
     public function validateField(Request $request)

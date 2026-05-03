@@ -270,15 +270,6 @@
                                                             x-bind:disabled="!(status == 2 || status == 3)"></textarea>
                                                     </div>
 
-                                                    @if ($dp->bukti)
-                                                        <a href="{{ asset('storage/bukti/' . $dp->bukti) }}"
-                                                            target="_blank"
-                                                            class="cursor-pointer px-5 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md"
-                                                            title="Download Bukti">
-                                                            <i class="bi bi-download text-lg"></i>
-                                                        </a>
-                                                    @endif
-
                                                     <div class="flex justify-end space-x-3 mt-6">
                                                         <button type="button"
                                                             @click=" status = defaultStatus; alasan = defaultAlasan; openEdit = false;"

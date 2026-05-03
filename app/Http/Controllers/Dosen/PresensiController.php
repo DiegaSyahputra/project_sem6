@@ -11,6 +11,7 @@ use App\Models\Matkul;
 use App\Models\Pertemuan;
 use App\Models\Prodi;
 use App\Models\Ruangan;
+use App\Models\Surat;
 use App\Models\TahunAjaran;
 use Auth;
 use Illuminate\Http\Request;
@@ -87,14 +88,14 @@ class PresensiController extends Controller
                 $pertemuan = Pertemuan::create($data);
 
                 $tahun = now()->format('y');
-                $lastKode = Presensi::where('presensi_id', 'like', "TR{$tahun}%")->lockForUpdate()
-                    ->orderByDesc('presensi_id')->first();
+                $lastKode = Presensi::where('presensis_id', 'like', "TR{$tahun}%")->lockForUpdate()
+                    ->orderByDesc('presensis_id')->first();
 
-                $nextNumber = $lastKode ? (int)substr($lastKode->presensi_id, -5) + 1 : 1;
+                $nextNumber = $lastKode ? (int)substr($lastKode->presensis_id, -5) + 1 : 1;
                 $noTransaksi = 'TR' . $tahun . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
 
                 $presensi = Presensi::create([
-                    'presensi_id' => $noTransaksi,
+                    'presensis_id' => $noTransaksi,
                     'pertemuan_id' => $pertemuan->id,
                     'tgl_presensi' => $tglPresensi,
                     'jam_awal' => $jamAwal,
@@ -150,7 +151,17 @@ class PresensiController extends Controller
         $title = 'Data Perkuliahan';
         $presensi = Presensi::with('dosen','pertemuan.prodi','ruangan','pertemuan.matkul','pertemuan.tahun')->findOrFail($id);
         $detail = DetailPresensi::with('mahasiswa')->where('presensi_id', $id)->get();
-        return view('dosen.info-presensi', compact('title','presensi','detail'));
+
+        $mahasiswaIds = $detail->pluck('mahasiswa_id');
+
+        // Query yang benar — cari surat pending yang rentang tglnya mencakup tgl_presensi ini
+        $suratPending = Surat::where('status', 'pending')
+            ->whereIn('mahasiswa_id', $mahasiswaIds)
+            ->where('tgl', $presensi->tgl_presensi)
+            ->get()
+            ->keyBy('mahasiswa_id');
+
+        return view('dosen.info-presensi', compact('title','presensi','detail','suratPending'));
     }
 
     /**
@@ -280,6 +291,29 @@ class PresensiController extends Controller
                     'alasan' => $request['alasan'],
                 ]);
 
+                // Di dalam updateDetailPresensi, setelah update surat_sakits
+                if ($request->filled('surat_sakit_id')) {
+                    $surat = Surat::findOrFail($request->surat_sakit_id);
+                    $statusSurat = in_array($request->status, [2, 3]) ? 'disetujui' : 'ditolak';
+
+                        $surat->update([
+                            'status'              => $statusSurat,
+                            'dikonfirmasi_oleh'   => auth()->id(),
+                            'dikonfirmasi_at'     => now(),
+                            'catatan_konfirmator' => $request->alasan,
+                        ]);
+
+                    // Jika ditolak, kembalikan semua presensi pending milik mahasiswa ini ke alpha
+                    if ($statusSurat === 'ditolak') {
+                        $presensiIds = Presensi::whereDate('tgl_presensi',$surat->tgl)->pluck('id');
+
+                        DetailPresensi::whereIn('presensi_id', $presensiIds)
+                            ->where('mahasiswa_id', $surat->mahasiswa_id)
+                            ->where('status', 4) // hanya yang masih pending
+                            ->update(['status' => 0]); // kembalikan ke alpha
+                    }
+                }
+
             return redirect()->route('dosen.presensi.show',$request['presensi_id'])->with([
                 'status' => 'success',
                 'message' => 'Data Berhasil Diubah'
@@ -323,6 +357,15 @@ class PresensiController extends Controller
                 'message' => 'Terjadi kesalahan saat menghapus data: '
             ]);
         }
+    }
+
+    public function getStatusPresensi($id)
+    {
+        $presensi = Presensi::findOrFail($id);
+        $status = DetailPresensi::where('presensi_id', $presensi->id)
+            ->get(['mahasiswa_id', 'status', 'waktu_presensi']);
+
+        return response()->json($status);
     }
 
     public function validateField(Request $request)

@@ -86,14 +86,14 @@ class PresensiController extends Controller
                 $pertemuan = Pertemuan::create($data);
 
                 $tahun = now()->format('ymd');
-                $lastKode = Presensi::where('presensi_id', 'like', "TR{$tahun}%")->lockForUpdate()
-                    ->orderByDesc('presensi_id')->first();
+                $lastKode = Presensi::where('presensis_id', 'like', "TR{$tahun}%")->lockForUpdate()
+                    ->orderByDesc('presensis_id')->first();
 
-                $nextNumber = $lastKode ? (int)substr($lastKode->presensi_id, -5) + 1 : 1;
+                $nextNumber = $lastKode ? (int)substr($lastKode->presensis_id, -5) + 1 : 1;
                 $noTransaksi = 'TR' . $tahun . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
 
                 $presensi = Presensi::create([
-                    'presensi_id' => $noTransaksi,
+                    'presensis_id' => $noTransaksi,
                     'pertemuan_id' => $pertemuan->id,
                     'tgl_presensi' => $tglPresensi,
                     'jam_awal' => $jamAwal,
@@ -148,8 +148,7 @@ class PresensiController extends Controller
         // Query yang benar — cari surat pending yang rentang tglnya mencakup tgl_presensi ini
         $suratPending = Surat::where('status', 'pending')
             ->whereIn('mahasiswa_id', $mahasiswaIds)
-            ->where('tgl_mulai', '<=', $presensi->tgl_presensi)
-            ->where('tgl_selesai', '>=', $presensi->tgl_presensi)
+            ->where('tgl', $presensi->tgl_presensi)
             ->get()
             ->keyBy('mahasiswa_id');
 
@@ -290,10 +289,7 @@ class PresensiController extends Controller
 
                     // Jika ditolak, kembalikan semua presensi pending milik mahasiswa ini ke alpha
                     if ($statusSurat === 'ditolak') {
-                        $presensiIds = Presensi::whereBetween('tgl_presensi', [
-                            $surat->tgl_mulai,
-                            $surat->tgl_selesai,
-                        ])->pluck('id');
+                        $presensiIds = Presensi::whereDate('tgl_presensi', $surat->tgl,)->pluck('id');
 
                         DetailPresensi::whereIn('presensi_id', $presensiIds)
                             ->where('mahasiswa_id', $surat->mahasiswa_id)

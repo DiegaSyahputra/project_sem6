@@ -11,13 +11,21 @@
         </p>
 
         <div class="w-full mt-5 p-5 bg-white dark:bg-gray-800 rounded-sm shadow-xl">
-            <div class="mb-4">
+            <div class="mb-4 flex gap-4">
                 <a href="{{ route('mahasiswa.presensi.izin') }}"
                     class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-bold shadow-lg shadow-orange-200 dark:shadow-none transition-all transform hover:scale-105">
                     <i class="bi bi-file-earmark-plus text-xl"></i>
                     Ajukan Izin / Sakit
                 </a>
+
+                <a href="{{ route('mahasiswa.presensi.riwayat-surat') }}"
+                    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold shadow-lg shadow-green-200 dark:shadow-none transition-all transform hover:scale-105">
+                    <i class="bi bi-clock-history text-xl"></i>
+                    Riwayat Surat
+                </a>
             </div>
+
+
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 h-full">
                 <div
@@ -82,7 +90,8 @@
                                 class="bg-gradient-to-r from-white to-gray-100 dark:from-gray-800 dark:to-gray-700 p-4 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 transition hover:shadow-xl">
                                 <div class="flex justify-between items-center">
                                     <div>
-                                        <p class="font-bold text-gray-800 dark:text-gray-100">{{ $r->tgl_presensi }}</p>
+                                        <p class="font-bold text-gray-800 dark:text-gray-100">{{ $r->tgl_presensi }}
+                                        </p>
                                         <p class="text-sm text-gray-600 dark:text-gray-300">
                                             {{ $r->pertemuan->matkul->nama_matkul ?? '-' }}</p>
                                         <p class="text-sm text-gray-600 dark:text-gray-300">Jam Kuliah:

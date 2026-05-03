@@ -130,7 +130,7 @@
                                     Waktu</label>
                                 <div
                                     class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center text-gray-700 dark:text-gray-200">
-                                    <div>
+                                    {{-- <div>
                                         <span class="text-[10px] font-bold text-gray-400 uppercase block mb-1">Mulai
                                             Dari</span>
                                         <input type="date" name="tgl_mulai" value="{{ old('tgl_mulai') }}"
@@ -141,16 +141,15 @@
                                                 {{ $message }}
                                             @enderror
                                         </span>
-                                    </div>
+                                    </div> --}}
                                     <div class="relative">
-                                        <span class="text-[10px] font-bold text-gray-400 uppercase block mb-1">Sampai
-                                            Dengan</span>
-                                        <input type="date" name="tgl_selesai" value="{{ old('tgl_selesai') }}"
+
+                                        <input type="date" name="tgl" value="{{ old('tgl') }}"
                                             class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600 focus:ring-2 focus:ring-orange-500 outline-none"
                                             required>
                                     </div>
-                                    <span class="text-red-600 text-sm" id="tgl_selesai_error">
-                                        @error('tgl_selesai')
+                                    <span class="text-red-600 text-sm" id="tgl_error">
+                                        @error('tgl')
                                             {{ $message }}
                                         @enderror
                                     </span>

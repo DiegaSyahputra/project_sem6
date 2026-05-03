@@ -44,7 +44,7 @@ class MahasiswaController extends Controller
 
             return redirect()->back()->withInput()->with([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan saat memperbarui data: ' 
+                'message' => 'Terjadi kesalahan saat memperbarui data: '
             ]);
         }
     }

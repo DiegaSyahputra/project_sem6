@@ -13,7 +13,7 @@ class Presensi extends Model
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'presensi_id',
+        'presensis_id',
         'pertemuan_id',
         'tgl_presensi',
         'jam_awal',

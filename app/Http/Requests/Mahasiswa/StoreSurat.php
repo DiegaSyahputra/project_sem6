@@ -30,8 +30,7 @@ class StoreSurat extends FormRequest
 
         return [
             'jenis'         => 'required|in:sakit,izin',
-            'tgl_mulai'     => 'required|date',
-            'tgl_selesai'   => 'required|date|after_or_equal:tgl_mulai',
+            'tgl'           => 'required|date|before_or_equal:today',,
             'foto_surat'    => 'required|file|mimes:jpg,jpeg,png|max:2048',
             'keterangan'    => 'nullable|string|max:255',
         ];
@@ -40,23 +39,17 @@ class StoreSurat extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
+            if ($validator->errors()->has('tgl')) return;
             $mahasiswa = Mahasiswa::where('user_id', auth()->id())->first();
             if (!$mahasiswa) return;
 
             $sudahAda = Surat::where('mahasiswa_id', $mahasiswa->id)
                 ->whereIn('status', ['pending', 'disetujui'])
-                ->where(function ($q) {
-                    $q->whereBetween('tgl_mulai', [$this->tgl_mulai, $this->tgl_selesai])
-                    ->orWhereBetween('tgl_selesai', [$this->tgl_mulai, $this->tgl_selesai])
-                    ->orWhere(function ($q) {
-                        // rentang surat sudah ada yang mencakup rentang baru
-                        $q->where('tgl_mulai', '<=', $this->tgl_mulai)
-                            ->where('tgl_selesai', '>=', $this->tgl_selesai);
-                    });
-                })->exists();
+                ->whereDate('tgl', $this->tgl)
+                ->exists();
 
             if ($sudahAda) {
-                $validator->errors()->add('tgl_mulai', 'Anda sudah memiliki pengajuan surat di rentang tanggal tersebut.');
+                $validator->errors()->add('tgl', 'Anda sudah memiliki pengajuan pada tanggal tersebut.');
             }
         });
     }
@@ -65,10 +58,9 @@ class StoreSurat extends FormRequest
         return [
             'jenis.required' => 'Jenis Surat tidak boleh kosong',
 
-            'tgl_mulai.required' => 'Pilih Tanggal Mulai terlebih dahulu',
-
-            'tgl_selesai.required' => 'Pilih Tanggal Selesai terlebih dahulu',
-            'tgl_selesai.after_or_equal' => 'Tanggal selesai tidak boleh sebelum tanggal mulai',
+            'tgl.required'               => 'Tanggal tidak boleh kosong.',
+            'tgl.date'                   => 'Format tanggal tidak valid.',
+            'tgl.before_or_equal'        => 'Tanggal tidak boleh lebih dari hari ini.',
 
             'foto_surat.required' => 'Foto Surat tidak boleh kosong',
             'foto_surat.max' => 'Ukuran Maksimal 2MB',
