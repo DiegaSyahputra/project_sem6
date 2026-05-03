@@ -31,7 +31,7 @@ class PresenceLecturerController extends Controller
             ->map(function ($item) {
                 return [
                     'semester' => $item->pertemuan->semester,
-                    'presensis_id' => $item->id,
+                    'presensi_id' => $item->id,
                     'jam_awal' => Carbon::parse($item->jam_awal)->format('H:i'),
                     'jam_akhir' => Carbon::parse($item->jam_akhir)->format('H:i'),
                     'nama_matkul' => $item->pertemuan->matkul->nama_matkul,
@@ -49,7 +49,7 @@ class PresenceLecturerController extends Controller
     public function updatePresence(Request $request)
     {
         $request->validate([
-            'presensis_id' => 'required|exists:presensis,id',
+            'presensi_id' => 'required|exists:presensi,id',
             'jam_awal' => 'required|date_format:H:i',
             'jam_akhir' => 'required|date_format:H:i',
         ]);
@@ -85,7 +85,7 @@ class PresenceLecturerController extends Controller
     public function deletePresence(Request $request)
     {
         $request->validate([
-            'presensis_id' => 'required|exists:presensis,id',
+            'presensi_id' => 'required|exists:presensi,id',
         ]);
 
         $presensiId = $request->presensis_id;

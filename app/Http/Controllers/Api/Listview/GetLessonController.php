@@ -31,6 +31,7 @@ class GetLessonController extends Controller
                 'pertemuan:id,matkul_id,prodi_id,semester',
                 'pertemuan.matkul:id,nama_matkul,kode_matkul,durasi_matkul',
                 'dosen:id,nama',
+                'lokasi:id,nama',
                 'ruangan:id,nama_ruangan',
                 'detailPresensi' => function ($query) use ($mahasiswaId) {
                     $query->where('mahasiswa_id', $mahasiswaId);
@@ -65,13 +66,15 @@ class GetLessonController extends Controller
 
                 return [
                     'presensis_id' => $presensi->id,
+                    'lokasi_id' => $presensi->lokasi_id ?? null,
+                    'nama_lokasi' => $presensi->lokasi->nama ?? null,
                     'nama_matkul' => $presensi->pertemuan?->matkul?->nama_matkul ?? null,
                     'durasi_matkul' => $presensi->pertemuan?->matkul?->durasi_matkul ?? null,
                     'kode_matkul' => $presensi->pertemuan?->matkul?->kode_matkul ?? null,
                     'nama_ruangan' => $presensi->ruangan->nama_ruangan ?? null,
                     'durasi_presensi' => $durasiPresensi,
-                    'presensi_id' => $presensi->presensi_id,
-                    'link_zoom' => $presensi->link_zoom,
+                    'presensi_id' => $presensi->presensis_id,
+                    'link_zoom' => $presensi->link_zoom ?? null,
                     'tgl_presensi' => $presensi->tgl_presensi,
                     'nama_dosen' => $presensi->dosen->nama ?? null,
                 ];
@@ -95,12 +98,13 @@ class GetLessonController extends Controller
     public function getLessonLecturer(Request $request)
     {
         $request->validate([
-            'dosen_id' => 'required|exists:dosens,id',
+            'dosen_id' => 'required|exists:dosen,id',
         ]);
 
         $jadwalHariIni = Presensi::with([
             'pertemuan.matkul.prodi',
             'ruangan',
+            'lokasi:id,nama',
             'dosen',
         ])
             ->whereDate('tgl_presensi', now()->toDateString())
@@ -114,13 +118,15 @@ class GetLessonController extends Controller
             ->map(function ($presensi) {
                 return [
                     'presensis_id' => $presensi->id,
-                    'presensi_id' => $presensi->presensi_id,
+                    'presensi_id' => $presensi->presensis_id,
+                    'lokasi_id' => $presensi->lokasi_id ?? null,
+                    'nama_lokasi' => $presensi->lokasi->nama ?? null,
                     'nama_matkul' => $presensi->pertemuan->matkul->nama_matkul,
                     'kode_matkul' => $presensi->pertemuan->matkul->kode_matkul,
                     'durasi_matkul' => $presensi->pertemuan->matkul->durasi_matkul,
                     'nama_ruangan' => optional($presensi->ruangan)->nama_ruangan,
                     'durasi_presensi' => date('H:i', strtotime($presensi->jam_awal)) . ' - ' . date('H:i', strtotime($presensi->jam_akhir)),
-                    'link_zoom' => $presensi->link_zoom,
+                    'link_zoom' => $presensi->link_zoom ?? null,
                     'tgl_presensi' => $presensi->tgl_presensi,
                     'nama_dosen' => optional($presensi->dosen)->nama,
                 ];

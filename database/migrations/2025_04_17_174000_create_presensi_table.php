@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->time('jam_akhir')->nullable();
             $table->foreignId('dosen_id')->constrained('dosen');
             $table->foreignId('ruangan_id')->nullable()->constrained('ruangan');
+            $table->foreignId('lokasi_id')->nullable()->constrained('lokasi');
             $table->string('link_zoom', '255')->nullable();
             $table->timestamps();
         });

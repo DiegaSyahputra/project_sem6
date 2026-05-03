@@ -32,7 +32,7 @@ class TransactionController extends Controller
             ], 404);
         }
 
-        if ($detail->status > 0) {
+        if ($detail->status > 0 || $detail->alasan != null || $detail->bukti != null) {
             return response()->json([
                 'status' => 'fail',
                 'message' => 'Anda sudah absensi'

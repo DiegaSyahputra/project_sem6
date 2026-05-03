@@ -30,10 +30,10 @@ class ChangePasswordController extends Controller
         try {
             // Cek mahasiswa berdasarkan email/nim
             $mahasiswa = DB::table('users')
-                ->join('mahasiswas', 'mahasiswas.user_id', '=', 'users.id')
+                ->join('mahasiswa', 'mahasiswa.user_id', '=', 'users.id')
                 ->where(function ($q) use ($email) {
                     if ($email)
-                        $q->orWhere('mahasiswas.email', $email);
+                        $q->orWhere('mahasiswa.email', $email);
                 })
                 ->select('users.id')
                 ->first();
@@ -85,7 +85,7 @@ class ChangePasswordController extends Controller
 
             // Cek dosen berdasarkan email/nip
             $dosen = DB::table('users')
-                ->join('dosens', 'dosens.user_id', '=', 'users.id')
+                ->join('dosen', 'dosen.user_id', '=', 'users.id')
                 ->where(function ($q) use ($email) {
                     if ($email)
                         $q->orWhere('users.email', $email);

@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\Listview\LectureLecturerController;
 use App\Http\Controllers\Api\Listview\LectureStudentController;
 use App\Http\Controllers\Api\Listview\PresenceController;
 use App\Http\Controllers\Api\Listview\PresenceLecturerController;
+use App\Http\Controllers\Api\Location\LocationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\LoginController;
 
@@ -43,6 +44,11 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('auth/fcm-token/delete', [FcmController::class, 'deleteToken']);
     Route::post('notifications', [NotificationController::class, 'index']);
     Route::post('notifications/send', [NotificationController::class, 'sendNotification']);
+
+    Route::prefix('location')->group(function () {
+        Route::get('/', [LocationController::class, 'index']);
+        Route::post('/', [LocationController::class, 'store']);
+    });
 
     Route::prefix('activityLecturer')->group(function () {
         Route::post('presence/check-edit', [CheckPresenceController::class, 'checkPresenceEdit']);

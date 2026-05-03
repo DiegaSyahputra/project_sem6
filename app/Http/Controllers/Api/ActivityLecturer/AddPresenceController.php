@@ -26,7 +26,7 @@ class AddPresenceController extends Controller
             $request->validate([
                 'presensi_id' => 'required|string',
                 'tgl_presensi' => 'required|date',
-                'pertemuan_ke' => 'required|int',
+                'pertemuan_ke' => 'required|integer',
                 'status' => 'required|in:aktif,libur',
                 'dosen_id' => 'required|integer',
                 'prodi_id' => 'required|integer',
@@ -38,6 +38,7 @@ class AddPresenceController extends Controller
             if ($request->status == "aktif") {
                 $request->validate([
                     'jenis_pertemuan' => 'required|in:teori,praktik',
+                    'lokasi_id' => 'required|integer',
                     'jam_awal' => 'required',
                     'jam_akhir' => 'required',
                     'link_zoom' => 'required|string',
@@ -103,7 +104,8 @@ class AddPresenceController extends Controller
             if ($request->status == "aktif") {
                 // 1. Simpan data presensi utama
                 $presensi = Presensi::create([
-                    'presensi_id' => $request->presensi_id,
+                    'presensis_id' => $request->presensi_id,
+                    'lokasi_id' => $request->lokasi_id,
                     'pertemuan_id' => $pertemuan->id,
                     'tgl_presensi' => $request->tgl_presensi,
                     'jam_awal' => $request->jam_awal,
@@ -127,10 +129,11 @@ class AddPresenceController extends Controller
 
             } else {
                 $presensi = Presensi::create([
-                    'presensi_id' => $request->presensi_id,
+                    'presensis_id' => $request->presensi_id,
                     'pertemuan_id' => $pertemuan->id,
                     'tgl_presensi' => $request->tgl_presensi,
                     'dosen_id' => $request->dosen_id,
+                    'lokasi_id' => null,
                     'jam_awal' => null,
                     'jam_akhir' => null,
                     'link_zoom' => null,
