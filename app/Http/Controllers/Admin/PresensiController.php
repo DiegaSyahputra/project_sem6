@@ -86,14 +86,14 @@ class PresensiController extends Controller
                 $pertemuan = Pertemuan::create($data);
 
                 $tahun = now()->format('ymd');
-                $lastKode = Presensi::where('presensis_id', 'like', "TR{$tahun}%")->lockForUpdate()
-                    ->orderByDesc('presensis_id')->first();
+                $lastKode = Presensi::where('kode_presensi', 'like', "TR{$tahun}%")->lockForUpdate()
+                    ->orderByDesc('kode_presensi')->first();
 
-                $nextNumber = $lastKode ? (int)substr($lastKode->presensis_id, -5) + 1 : 1;
+                $nextNumber = $lastKode ? (int)substr($lastKode->kode_presensi, -5) + 1 : 1;
                 $noTransaksi = 'TR' . $tahun . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
 
                 $presensi = Presensi::create([
-                    'presensis_id' => $noTransaksi,
+                    'kode_presensi' => $noTransaksi,
                     'pertemuan_id' => $pertemuan->id,
                     'tgl_presensi' => $tglPresensi,
                     'jam_awal' => $jamAwal,
