@@ -8,6 +8,7 @@ use App\Models\FcmToken;
 use App\Models\Mahasiswa;
 use App\Models\Matkul;
 use App\Models\Notification;
+use App\Models\Surat;
 use App\Services\FcmV1Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,31 +27,53 @@ class PresenceContentController extends Controller
             'presensi_id' => 'required|exists:presensi,id',
             'status' => 'required|in:1,2,3,4', // sesuaikan range status valid
             'waktu_presensi' => 'required|date',
-            'alasan' => 'nullable|string|max:255',
-            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx|max:5120', // max:5120 KB = 5 MB
+            'keterangan' => 'nullable|string|max:255',
+            'surat' => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx|max:5120', // max:5120 KB = 5 MB
         ]);
 
-        // Persiapkan data untuk update
-        $data = [
-            'alasan' => $request->alasan,
-            'waktu_presensi' => $request->waktu_presensi,
-        ];
 
         // Handle file upload jika ada
-        if ($request->hasFile('bukti')) {
-            $file = $request->file('bukti');
-            $filename = 'bukti-' . $request->mahasiswa_id . '-' . now()->format('Ymd') . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+        if ($request->hasFile('surat')) {
+            $file = $request->file('surat');
+            $filename = 'surat-' . $request->mahasiswa_id . '-' . now()->format('Ymd') . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
             // Simpan ke storage/app/public/bukti
-            $file->storeAs('bukti', $filename, 'public');
+            $file->storeAs('surat', $filename, 'public');
             // Simpan path relatif ke database
-            $data['bukti'] = 'bukti/' . $filename;
+            $suratPath = 'surat/' . $filename;
+
+            if ($request->status == '2') {
+                $jenis = 'izin';
+            } else if ($request->status == '3') {
+                $jenis = 'sakit';
+            }
+
+            $waktu = Carbon::now()->timezone('Asia/Jakarta');
+
+            // Gunakan format Y-m-d untuk kolom tipe DATE
+            $tanggalUntukDB = $waktu->format('Y-m-d');
+
+            $surat = Surat::create([
+                'mahasiswa_id' => $request->mahasiswa_id,
+                'jenis' => $jenis,
+                'tgl' => $tanggalUntukDB,
+                'foto_surat' => $suratPath,
+                'keterangan' => $request->keterangan,
+                'status' => 'pending',
+            ]);
+
+            $statuss = '4';
+
         }
 
         // Jalankan update data
         $updated = DB::table('detail_presensi')
             ->where('presensi_id', $request->presensi_id)
             ->where('mahasiswa_id', $request->mahasiswa_id)
-            ->update($data);
+            ->update([
+                'status' => $statuss,
+                'waktu_presensi' => $request->waktu_presensi,
+            ]);
+
 
         // Ambil data mahasiswa & user
         $mahasiswa = Mahasiswa::with('user')->findOrFail($request->mahasiswa_id);

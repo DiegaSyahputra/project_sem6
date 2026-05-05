@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('lokasi', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 100);
+            $table->string('nama', 100)->unique();
             $table->decimal('latitude', 11, 8);
             $table->decimal('longitude', 11, 8);
             $table->integer('radius')->default(0);
