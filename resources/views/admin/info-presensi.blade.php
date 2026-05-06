@@ -263,9 +263,9 @@
                                                         </label>
                                                     </div>
                                                     <div class="mb-6 w-full">
-                                                        <label for="alasan"
-                                                            class="block text-gray-700 dark:text-gray-200 mb-1">Alasan:</label>
-                                                        <textarea id="alasan" name="alasan" x-model="alasan" rows="3"
+                                                        <label for="keterangan"
+                                                            class="block text-gray-700 dark:text-gray-200 mb-1">keterangan:</label>
+                                                        <textarea id="keterangan" name="keterangan" x-model="keterangan" rows="3"
                                                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                             x-bind:disabled="!(status == 2 || status == 3)"></textarea>
                                                     </div>

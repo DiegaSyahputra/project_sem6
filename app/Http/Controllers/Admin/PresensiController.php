@@ -110,8 +110,6 @@ class PresensiController extends Controller
                             'mahasiswa_id' => $mhs->id,
                             'waktu_presensi' => null,
                             'status' => 0,
-                            'alasan' => null,
-                            'bukti' => null,
                         ]);
                     }
                 }
@@ -203,8 +201,6 @@ class PresensiController extends Controller
                             'mahasiswa_id' => $mhs->id,
                             'waktu_presensi' => null,
                             'status' => 0,
-                            'alasan' => null,
-                            'bukti' => null,
                         ]);
                     }
 
@@ -271,7 +267,6 @@ class PresensiController extends Controller
                 ->update([
                     'status' => $request['status'],
                     'waktu_presensi' => $request['status'] == 1 ? now() : null,
-                    'alasan' => $request['alasan'],
                 ]);
 
 
