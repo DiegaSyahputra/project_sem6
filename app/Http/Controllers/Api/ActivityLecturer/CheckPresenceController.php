@@ -102,7 +102,7 @@ class CheckPresenceController extends Controller
             'jam_akhir' => 'required',
         ]);
 
-        $presensi = Presensi::find($request->presensis_id);
+        $presensi = Presensi::find($request->presensi_id);
 
         if (!$presensi) {
             return response()->json([
@@ -202,7 +202,7 @@ class CheckPresenceController extends Controller
             'tgl_presensi' => 'required|date',
             'prodi_id' => 'required|integer',
             'semester' => 'required|integer',
-            'status' => 'required|in:aktif,libur',
+            'status' => 'required|in:aktif,libur,uts,uas',
             'pertemuan_ke' => 'required|integer',
             'matkul_id' => 'required|integer',
             'tahun_ajaran_id' => 'required|integer',

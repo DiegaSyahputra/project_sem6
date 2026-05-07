@@ -13,8 +13,8 @@ class PresenceIncrementController extends Controller
         $year = now()->format('y'); // contoh: '25'
 
         // Cari presensi_id yang diawali dengan 'TR' + tahun, lalu ambil 4 digit terakhir sebagai angka
-        $lastIncrement = Presensi::where('presensi_id', 'like', 'TR' . $year . '%')
-            ->selectRaw('MAX(CAST(SUBSTRING(presensi_id, -4) AS UNSIGNED)) as lastIncrement')
+        $lastIncrement = Presensi::where('kode_presensi', 'like', 'TR' . $year . '%')
+            ->selectRaw('MAX(CAST(SUBSTRING(kode_presensi, -4) AS UNSIGNED)) as lastIncrement')
             ->value('lastIncrement');
 
         return response()->json([

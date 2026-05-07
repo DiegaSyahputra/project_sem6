@@ -32,7 +32,7 @@ class TransactionController extends Controller
             ], 404);
         }
 
-        if ($detail->status > 0 || $detail->alasan != null || $detail->bukti != null) {
+        if ($detail->status > 0) {
             return response()->json([
                 'status' => 'fail',
                 'message' => 'Anda sudah absensi'
@@ -51,8 +51,9 @@ class TransactionController extends Controller
                 'status' => $detail->status,
                 'durasi_presensi' => date('H:i', strtotime($detail->presensi->jam_awal)) . ' - ' . date('H:i', strtotime($detail->presensi->jam_akhir)),
                 'tgl_presensi' => $presensi->tgl_presensi,
+                'lokasi_id' => $presensi->lokasi_id,
                 'mahasiswa_id' => $mahasiswaId,
-                'presensi_id' => $presensi->presensi_id,
+                'presensi_id' => $presensi->id,
                 'nama_matkul' => $matkul->nama_matkul,
                 'kode_matkul' => $matkul->kode_matkul,
             ]

@@ -88,7 +88,7 @@ class PresenceLecturerController extends Controller
             'presensi_id' => 'required|exists:presensi,id',
         ]);
 
-        $presensiId = $request->presensis_id;
+        $presensiId = $request->presensi_id;
         $presensi = Presensi::findOrFail($presensiId);
 
         // Hapus relasi detail presensi dulu

@@ -12,10 +12,7 @@ use App\Models\Surat;
 use App\Services\FcmV1Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
+use function PHPUnit\Framework\isEmpty;
 
 class PresenceContentController extends Controller
 {
@@ -31,12 +28,12 @@ class PresenceContentController extends Controller
             'surat' => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx|max:5120', // max:5120 KB = 5 MB
         ]);
 
-
+        $statuss = '1';
         // Handle file upload jika ada
         if ($request->hasFile('surat')) {
             $file = $request->file('surat');
             $filename = 'surat-' . $request->mahasiswa_id . '-' . now()->format('Ymd') . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
-            // Simpan ke storage/app/public/bukti
+            // Simpan ke storage/app/public/surat
             $file->storeAs('surat', $filename, 'public');
             // Simpan path relatif ke database
             $suratPath = 'surat/' . $filename;
@@ -52,7 +49,7 @@ class PresenceContentController extends Controller
             // Gunakan format Y-m-d untuk kolom tipe DATE
             $tanggalUntukDB = $waktu->format('Y-m-d');
 
-            $surat = Surat::create([
+            Surat::create([
                 'mahasiswa_id' => $request->mahasiswa_id,
                 'jenis' => $jenis,
                 'tgl' => $tanggalUntukDB,
@@ -62,12 +59,10 @@ class PresenceContentController extends Controller
             ]);
 
             $statuss = '4';
-
         }
 
         // Jalankan update data
-        $updated = DB::table('detail_presensi')
-            ->where('presensi_id', $request->presensi_id)
+        $updated = DetailPresensi::where('presensi_id', $request->presensi_id)
             ->where('mahasiswa_id', $request->mahasiswa_id)
             ->update([
                 'status' => $statuss,

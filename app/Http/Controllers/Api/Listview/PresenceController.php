@@ -58,7 +58,7 @@ class PresenceController extends Controller
                 'nama_lokasi' => $presensi->lokasi->nama ?? null,
                 'nim' => $detail?->mahasiswa?->nim,
                 'semester' => $detail?->mahasiswa?->semester,
-                'presensi_id' => $presensi->presensis_id,
+                'presensi_id' => $presensi->kode_presensi,
                 'durasi_presensi' => Carbon::parse($presensi->jam_awal)->format('H:i') . ' - ' . Carbon::parse($presensi->jam_akhir)->format('H:i'),
                 'nama_matkul' => $presensi->pertemuan->matkul->nama_matkul ?? null,
                 'durasi_matkul' => $presensi->pertemuan->matkul->durasi_matkul ?? null,

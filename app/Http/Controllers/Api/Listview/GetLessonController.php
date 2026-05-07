@@ -73,7 +73,7 @@ class GetLessonController extends Controller
                     'kode_matkul' => $presensi->pertemuan?->matkul?->kode_matkul ?? null,
                     'nama_ruangan' => $presensi->ruangan->nama_ruangan ?? null,
                     'durasi_presensi' => $durasiPresensi,
-                    'presensi_id' => $presensi->presensis_id,
+                    'presensi_id' => $presensi->kode_presensi,
                     'link_zoom' => $presensi->link_zoom ?? null,
                     'tgl_presensi' => $presensi->tgl_presensi,
                     'nama_dosen' => $presensi->dosen->nama ?? null,
@@ -118,7 +118,7 @@ class GetLessonController extends Controller
             ->map(function ($presensi) {
                 return [
                     'presensis_id' => $presensi->id,
-                    'presensi_id' => $presensi->presensis_id,
+                    'presensi_id' => $presensi->kode_presensi,
                     'lokasi_id' => $presensi->lokasi_id ?? null,
                     'nama_lokasi' => $presensi->lokasi->nama ?? null,
                     'nama_matkul' => $presensi->pertemuan->matkul->nama_matkul,

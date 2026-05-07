@@ -64,6 +64,7 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('presence/lastIncrement', [PresenceIncrementController::class, 'getLastIncrement']);
         Route::post('presence/uploadPresence', [AddPresenceController::class, 'uploadPresence']);
         Route::get('presence/majors', [AddPresenceController::class, 'showMajors']);
+        Route::get('presence/rooms', [AddPresenceController::class, 'showRooms']);
         Route::get('presence/matkuls', [AddPresenceController::class, 'showMatkuls']);
         Route::get('presence/tahunAjarans', [AddPresenceController::class, 'showTahunAjarans']);
         Route::get('presence/disabledPertemuans', [AddPresenceController::class, 'showDisabledPertemuans']);

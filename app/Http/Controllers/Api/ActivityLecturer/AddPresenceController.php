@@ -6,6 +6,7 @@ use App\Models\Dosen;
 use App\Models\FcmToken;
 use App\Models\Notification;
 use App\Models\Pertemuan;
+use App\Models\Ruangan;
 use App\Services\FcmV1Service;
 use App\Http\Controllers\Controller;
 use App\Models\DetailPresensi;
@@ -27,7 +28,7 @@ class AddPresenceController extends Controller
                 'presensi_id' => 'required|string',
                 'tgl_presensi' => 'required|date',
                 'pertemuan_ke' => 'required|integer',
-                'status' => 'required|in:aktif,libur',
+                'status' => 'required|in:aktif,libur,uts,uas',
                 'dosen_id' => 'required|integer',
                 'prodi_id' => 'required|integer',
                 'semester' => 'required|integer',
@@ -41,8 +42,18 @@ class AddPresenceController extends Controller
                     'lokasi_id' => 'required|integer',
                     'jam_awal' => 'required',
                     'jam_akhir' => 'required',
-                    'link_zoom' => 'required|string',
                 ]);
+
+                if ($request->kategori != null && $request->kategori == "daring") {
+                    $request->validate([
+                        'link_zoom' => 'required|string',
+                    ]);
+                } else if ($request->kategori != null && $request->kategori == "luring") {
+                    $request->validate([
+                        'ruangan_id' => 'required|integer'
+                    ]);
+                }
+
             }
 
             DB::begintransaction();
@@ -104,7 +115,7 @@ class AddPresenceController extends Controller
             if ($request->status == "aktif") {
                 // 1. Simpan data presensi utama
                 $presensi = Presensi::create([
-                    'presensis_id' => $request->presensi_id,
+                    'kode_presensi' => $request->presensi_id,
                     'lokasi_id' => $request->lokasi_id,
                     'pertemuan_id' => $pertemuan->id,
                     'tgl_presensi' => $request->tgl_presensi,
@@ -129,7 +140,7 @@ class AddPresenceController extends Controller
 
             } else {
                 $presensi = Presensi::create([
-                    'presensis_id' => $request->presensi_id,
+                    'kode_presensi' => $request->presensi_id,
                     'pertemuan_id' => $pertemuan->id,
                     'tgl_presensi' => $request->tgl_presensi,
                     'dosen_id' => $request->dosen_id,
@@ -199,6 +210,16 @@ class AddPresenceController extends Controller
             'status' => 'success',
             'message' => 'Data prodi berhasil ditampilkan',
             'data' => $prodis
+        ]);
+    }
+    public function showRooms(Request $request)
+    {
+        $ruangans = Ruangan::select('id', 'nama_ruangan')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data ruangan berhasil ditampilkan',
+            'data' => $ruangans
         ]);
     }
     public function showMatkuls(Request $request)

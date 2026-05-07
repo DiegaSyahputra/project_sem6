@@ -107,8 +107,8 @@ class DetailPresenceLecturerController extends Controller
             'data' => [
                 'status' => (int) $detail->status,
                 'waktu_presensi' => $detail->waktu_presensi,
-                'alasan' => $detail->alasan,
-                'bukti' => $detail->bukti,
+                // 'alasan' => $detail->alasan,
+                // 'bukti' => $detail->bukti,
             ]
         ]);
     }
