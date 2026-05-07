@@ -133,7 +133,7 @@ class PresensiController extends Controller
                 $mahasiswa = Mahasiswa::where('user_id', auth()->id())->firstOrFail();
 
                 // Simpan file
-                $fotoPath = $request->file('foto_surat')->store('surat_sakits', 'public');
+                $fotoPath = $request->file('foto_surat')->store('surat', 'public');
 
                 // Simpan surat sakit
                 Surat::create([

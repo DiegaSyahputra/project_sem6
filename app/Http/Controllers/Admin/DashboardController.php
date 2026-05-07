@@ -84,16 +84,16 @@ class DashboardController extends Controller
         $startOfMonth = $now->copy()->startOfMonth();
         $endOfMonth = $now->copy()->endOfMonth();
 
-        // Ambil semua presensis_id dalam bulan ini sekali
+        // Ambil semua presensi_id dalam bulan ini sekali
         $presensiIdsBulanIni = Presensi::whereBetween('tgl_presensi', [
             $startOfMonth, $endOfMonth
         ])->pluck('id');
 
         // Ambil semua detail presensi bulan ini SEKALI
-        $detailBulanIni = DetailPresensi::whereIn('presensis_id', $presensiIdsBulanIni)
+        $detailBulanIni = DetailPresensi::whereIn('presensi_id', $presensiIdsBulanIni)
             ->whereIn('status', [0, 1, 2, 3])
             ->with('presensi:id,tgl_presensi')
-            ->get(['status', 'presensis_id']);
+            ->get(['status', 'presensi_id']);
 
         // Proses chart di PHP, bukan di database
         $statusMap = [1 => 'Hadir', 2 => 'Izin', 3 => 'Sakit', 0 => 'Alpha'];
@@ -121,7 +121,7 @@ class DashboardController extends Controller
             $chartData[] = ['name' => $statusLabel, 'data' => $minggu];
         }
 
-        // Query hari ini — pisah presensis_id dulu
+        // Query hari ini — pisah presensi_id dulu
         $presensiIdsHariIni = Presensi::whereDate('tgl_presensi', $today)
             ->whereTime('jam_akhir', '<=', $now->toTimeString())
             ->pluck('id');
@@ -145,7 +145,7 @@ class DashboardController extends Controller
                     'presensi.pertemuan.prodi:id,nama_prodi'
                 ])
                 ->whereIn('status', [0, 2, 3])
-                ->whereIn('presensis_id', $presensiIdsHariIni)
+                ->whereIn('presensi_id', $presensiIdsHariIni)
                 ->get(),
 
             'hadir' => DetailPresensi::with([
@@ -155,7 +155,7 @@ class DashboardController extends Controller
                     'presensi.pertemuan.prodi:id,nama_prodi'
                 ])
                 ->where('status', 1)
-                ->whereIn('presensis_id', $presensiIdsHariIni)
+                ->whereIn('presensi_id', $presensiIdsHariIni)
                 ->orderByDesc('waktu_presensi')
                 ->limit(40)
                 ->get(),
