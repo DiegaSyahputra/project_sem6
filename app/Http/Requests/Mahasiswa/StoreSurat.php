@@ -30,7 +30,7 @@ class StoreSurat extends FormRequest
 
         return [
             'jenis'         => 'required|in:sakit,izin',
-            'tgl'           => 'required|date|before_or_equal:today',,
+            'tgl'           => 'required|date|before_or_equal:today',
             'foto_surat'    => 'required|file|mimes:jpg,jpeg,png|max:2048',
             'keterangan'    => 'nullable|string|max:255',
         ];

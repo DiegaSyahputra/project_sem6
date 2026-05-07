@@ -58,7 +58,7 @@
                             @else
                                 <div class="text-center text-gray-600 dark:text-gray-400">
                                     <p class="text-7xl mb-2">🕓</p>
-                                    <p class="text-lg font-semibold">Silakan tap kartu RFID Anda</p>
+                                    <p class="text-lg font-semibold">Silakan posisikan wajah Anda pada area scan</p>
                                     <p class="mt-2 text-gray-600 dark:text-gray-400">Mata Kuliah:
                                         {{ $presensi->pertemuan->matkul->nama_matkul }}
                                     </p>

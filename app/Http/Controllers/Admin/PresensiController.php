@@ -110,8 +110,6 @@ class PresensiController extends Controller
                             'mahasiswa_id' => $mhs->id,
                             'waktu_presensi' => null,
                             'status' => 0,
-                            'alasan' => null,
-                            'bukti' => null,
                         ]);
                     }
                 }
@@ -142,17 +140,17 @@ class PresensiController extends Controller
         $title = 'Detail Data Perkuliahan';
         $presensi = Presensi::with('dosen','pertemuan.prodi','ruangan','pertemuan.matkul','pertemuan.tahun')->findOrFail($id);
         $detail = DetailPresensi::with('mahasiswa')->where('presensi_id', $id)->get();
+        // $surat = Surat::with('mahasiswa')->select('keterangan')->where('presensi_id', $id)->get();
 
         $mahasiswaIds = $detail->pluck('mahasiswa_id');
 
         // Query yang benar — cari surat pending yang rentang tglnya mencakup tgl_presensi ini
-        $suratPending = Surat::where('status', 'pending')
-            ->whereIn('mahasiswa_id', $mahasiswaIds)
+        $suratMahasiswa = Surat::whereIn('mahasiswa_id', $mahasiswaIds)
             ->where('tgl', $presensi->tgl_presensi)
             ->get()
             ->keyBy('mahasiswa_id');
 
-        return view('admin.info-presensi', compact('title','presensi','detail','suratPending'));
+        return view('admin.info-presensi', compact('title','presensi','detail','suratMahasiswa'));
     }
 
     public function update(UpdatePresensi $request, $id){
@@ -203,8 +201,6 @@ class PresensiController extends Controller
                             'mahasiswa_id' => $mhs->id,
                             'waktu_presensi' => null,
                             'status' => 0,
-                            'alasan' => null,
-                            'bukti' => null,
                         ]);
                     }
 
@@ -271,7 +267,6 @@ class PresensiController extends Controller
                 ->update([
                     'status' => $request['status'],
                     'waktu_presensi' => $request['status'] == 1 ? now() : null,
-                    'alasan' => $request['alasan'],
                 ]);
 
 
