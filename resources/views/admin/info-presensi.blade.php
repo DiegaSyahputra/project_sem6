@@ -369,7 +369,7 @@
                                                                 Catatan (Opsional):
                                                             </label>
                                                             <textarea name="keterangan" rows="2" x-model="keterangan"
-                                                                class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md">{{ $surat->keterangan }}</textarea>
+                                                                class="w-full px-3 py-2 border dark:bg-gray-800 dark:text-white rounded-md"></textarea>
                                                         </div>
 
                                                         <div class="flex justify-end gap-2">
