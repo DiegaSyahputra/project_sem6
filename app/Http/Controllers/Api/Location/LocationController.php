@@ -52,6 +52,38 @@ class LocationController extends Controller
         );
     }
 
+    public function showLocation(Request $request)
+    {
+        $request->validate([
+            'lokasi_id' => 'required'
+        ]);
+
+        $lokasi = Lokasi::where('id', $request->lokasi_id)->latest()->first();
+
+        if (!$lokasi) {
+            return response()->json(
+                [
+                    'status' => 'error',
+                    'message' => 'Lokasi tidak tersedia'
+                ]
+            );
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Lokasi berhasil diambil',
+            'data' => [
+                'id' => $lokasi->id,
+                'latitude' => $lokasi->latitude,
+                'longitude' => $lokasi->longitude,
+                'nama' => $lokasi->nama,
+                'radius' => $lokasi->radius,
+                'is_active' => $lokasi->is_active,
+            ]
+        ]);
+
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -64,7 +96,7 @@ class LocationController extends Controller
         $existing = Lokasi::whereRaw('LOWER(TRIM(nama)) = ?', [
             strtolower(trim($validated['nama']))
         ])->first();
-        
+
         if ($existing) {
             return response()->json([
                 'status' => 'error',
