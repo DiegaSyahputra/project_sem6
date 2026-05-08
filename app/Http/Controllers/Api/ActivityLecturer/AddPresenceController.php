@@ -122,7 +122,11 @@ class AddPresenceController extends Controller
                     'jam_awal' => $request->jam_awal,
                     'jam_akhir' => $request->jam_akhir,
                     'dosen_id' => $request->dosen_id,
-                    'link_zoom' => $request->link_zoom,
+
+                    'link_zoom' => $request->kategori == 'daring'
+                        ? $request->link_zoom : null,
+                    'ruangan_id' => $request->kategori == 'luring'
+                        ? $request->ruangan_id : null,
                 ]);
 
                 // 2. Ambil mahasiswa berdasarkan prodi dan semester
@@ -145,6 +149,7 @@ class AddPresenceController extends Controller
                     'tgl_presensi' => $request->tgl_presensi,
                     'dosen_id' => $request->dosen_id,
                     'lokasi_id' => null,
+                    'ruangan_id' => null,
                     'jam_awal' => null,
                     'jam_akhir' => null,
                     'link_zoom' => null,

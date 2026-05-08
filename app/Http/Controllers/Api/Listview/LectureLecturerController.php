@@ -44,7 +44,6 @@ class LectureLecturerController extends Controller
             'data' => $data
         ]);
     }
-
     public function showLectureContent(Request $request)
     {
         $presensisId = $request->query('presensi_id');
@@ -77,7 +76,6 @@ class LectureLecturerController extends Controller
             ]
         ]);
     }
-
     public function updateLecture(Request $request)
     {
         $request->validate([
