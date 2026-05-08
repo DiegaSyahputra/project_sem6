@@ -48,6 +48,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::prefix('location')->group(function () {
         Route::get('/', [LocationController::class, 'index']);
         Route::post('/', [LocationController::class, 'store']);
+        Route::get('/show', [LocationController::class, 'showLocation']);
     });
 
     Route::prefix('activityLecturer')->group(function () {
