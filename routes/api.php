@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Auth\ChangePasswordController;
 use App\Http\Controllers\Api\Auth\FcmController;
 use App\Http\Controllers\Api\Auth\ForgetPasswordController;
 use App\Http\Controllers\Api\Auth\NotificationController;
+use App\Http\Controllers\Api\FaceEmbedding\FaceEmbeddingController;
 use App\Http\Controllers\Api\Listview\AttendanceStudentController;
 use App\Http\Controllers\Api\Listview\GetLessonController;
 use App\Http\Controllers\Api\Listview\LectureLecturerController;
@@ -51,6 +52,10 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('/show', [LocationController::class, 'showLocation']);
     });
 
+    Route::prefix('faceEmbedding')->group(function() {
+        Route::post('/store', [FaceEmbeddingController::class, 'store']);
+    });
+
     Route::prefix('activityLecturer')->group(function () {
         Route::post('presence/check-edit', [CheckPresenceController::class, 'checkPresenceEdit']);
         Route::post('presence/check-upload', [CheckPresenceController::class, 'checkPresenceUpload']);
@@ -83,7 +88,6 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('presensi-summary/{mahasiswaId}', [SummaryController::class, 'countByMahasiswa']);
         Route::get('presensi-summary/dosen/{dosenId}', [SummaryController::class, 'countByDosen']);
     });
-
 
     Route::prefix('listview')->group(function () {
         Route::get('getLesson', [GetLessonController::class, 'getLessonStudent']);
