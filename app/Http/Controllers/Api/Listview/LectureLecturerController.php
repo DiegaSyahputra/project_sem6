@@ -83,7 +83,7 @@ class LectureLecturerController extends Controller
             'presensi_id' => 'required|exists:presensi,id'
         ]);
 
-        $presensi = Presensi::find($request->presensis_id);
+        $presensi = Presensi::find($request->presensi_id);
         $presensi->link_zoom = $request->link_zoom ?? null;
 
         if ($presensi->save()) {

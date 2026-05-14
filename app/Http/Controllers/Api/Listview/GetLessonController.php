@@ -117,7 +117,7 @@ class GetLessonController extends Controller
             ->get()
             ->map(function ($presensi) {
                 return [
-                    'presensis_id' => $presensi->id,
+                    'presensi_id' => $presensi->id,
                     'presensi_id' => $presensi->kode_presensi,
                     'lokasi_id' => $presensi->lokasi_id ?? null,
                     'nama_lokasi' => $presensi->lokasi->nama ?? null,
