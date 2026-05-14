@@ -34,7 +34,7 @@ class LectureStudentController extends Controller
                         'semester' => $item->presensi->pertemuan->semester,
                         'nama_dosen' => $item->presensi->dosen->nama,
                         'durasi_presensi' => date('H:i', strtotime($item->presensi->jam_awal)) . ' - ' . date('H:i', strtotime($item->presensi->jam_akhir)),
-                        'link_zoom' => $item->presensi->link_zoom,
+                        'link_zoom' => $item->presensi->link_zoom ?? null,
                         'tgl_presensi' => $item->presensi->tgl_presensi,
                     ];
                 });
@@ -56,11 +56,11 @@ class LectureStudentController extends Controller
     }
      public function lectureContent(Request $request)
     {
-        $presensiId = $request->query('presensis_id');
+        $presensiId = $request->query('presensi_id');
         if (!$presensiId) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Presensis Id tidak boleh kosong'
+                'message' => 'Presensi Id tidak boleh kosong'
             ], 400);
         }
 
@@ -83,7 +83,7 @@ class LectureStudentController extends Controller
             'code' => 200,
             'message' => 'Data presensi online berhasil diambil',
             'data' => [
-                'presensis_id'    => $detail->presensi->id,
+                'presensi_id'    => $detail->presensi->id,
                 'nama_matkul'     => $detail->presensi->pertemuan->matkul->nama_matkul,
                 'semester'        => $detail->presensi->pertemuan->matkul->semester,
                 'nama_dosen'      => $detail->presensi->dosen->nama,

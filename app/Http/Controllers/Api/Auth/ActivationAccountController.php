@@ -115,7 +115,7 @@ class ActivationAccountController extends Controller
     public function validateAccount(Request $request)
     {
         $request->validate([
-            'nim' => 'required|string|exists:mahasiswas,nim',
+            'nim' => 'required|string|exists:mahasiswa,nim',
             'password' => 'required|string|min:6',
         ]);
 
@@ -123,12 +123,12 @@ class ActivationAccountController extends Controller
         $password = Hash::make($request->password);
         $emailVerifiedAt = Carbon::now('Asia/Jakarta')->toDateTimeString();
 
-        $updated = DB::table('mahasiswas')
-            ->join('users', 'mahasiswas.user_id', '=', 'users.id')
-            ->where('mahasiswas.nim', $nim)
+        $updated = DB::table('mahasiswa')
+            ->join('users', 'mahasiswa.user_id', '=', 'users.id')
+            ->where('mahasiswa.nim', $nim)
             ->update([
                 'users.password' => $password,
-                'mahasiswas.email_verified_at' => $emailVerifiedAt,
+                'mahasiswa.email_verified_at' => $emailVerifiedAt,
             ]);
 
         if ($updated > 0) {

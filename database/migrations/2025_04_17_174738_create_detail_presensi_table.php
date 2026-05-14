@@ -16,8 +16,6 @@ return new class extends Migration
             $table->foreignId('mahasiswa_id')->constrained('mahasiswa');
             $table->dateTime('waktu_presensi')->nullable();
             $table->boolean('status')->default(false);
-            $table->string('alasan')->nullable();
-            $table->string('bukti',100)->nullable();
         });
     }
 

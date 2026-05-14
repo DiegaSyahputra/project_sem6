@@ -42,6 +42,7 @@ class TransactionController extends Controller
         // Ambil relasi ke Presensi dan Matkul
         $presensi = $detail->presensi;
         $pertemuan = $presensi->pertemuan;
+        $lokasi = $presensi->lokasi;
         $matkul = $pertemuan->matkul;
 
         return response()->json([
@@ -51,8 +52,10 @@ class TransactionController extends Controller
                 'status' => $detail->status,
                 'durasi_presensi' => date('H:i', strtotime($detail->presensi->jam_awal)) . ' - ' . date('H:i', strtotime($detail->presensi->jam_akhir)),
                 'tgl_presensi' => $presensi->tgl_presensi,
+                'lokasi_id' => $presensi->lokasi_id,
+                'nama_lokasi' => $lokasi->nama,
                 'mahasiswa_id' => $mahasiswaId,
-                'presensi_id' => $presensi->presensi_id,
+                'presensi_id' => $presensi->id,
                 'nama_matkul' => $matkul->nama_matkul,
                 'kode_matkul' => $matkul->kode_matkul,
             ]

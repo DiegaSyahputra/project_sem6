@@ -13,6 +13,8 @@ Route::middleware(['auth', 'role:mahasiswa'])->prefix('mahasiswa')->name('mahasi
 
     Route::get('/presensi/izin', [PresensiController::class, 'izin'])->name('presensi.izin');
     Route::post('/presensi/izin', [PresensiController::class, 'store'])->name('presensi.izin.store');
+    Route::get('/presensi/riwayat-surat', [PresensiController::class, 'riwayatSurat'])
+    ->name('presensi.riwayat-surat');
     Route::post('/validate-field/surat', [PresensiController::class, 'validateField'])->name('mahasiswa.validate.field.surat');
 
 

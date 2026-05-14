@@ -12,13 +12,14 @@ return new class extends Migration {
     {
         Schema::create('presensi', function (Blueprint $table) {
             $table->id();
-            $table->string('presensi_id', '30');
+            $table->string('kode_presensi', '30');
             $table->foreignId('pertemuan_id')->constrained('pertemuan')->onDelete('cascade');
             $table->date('tgl_presensi');
             $table->time('jam_awal')->nullable();
             $table->time('jam_akhir')->nullable();
             $table->foreignId('dosen_id')->constrained('dosen');
             $table->foreignId('ruangan_id')->nullable()->constrained('ruangan');
+            $table->foreignId('lokasi_id')->nullable()->constrained('lokasi');
             $table->string('link_zoom', '255')->nullable();
             $table->timestamps();
         });

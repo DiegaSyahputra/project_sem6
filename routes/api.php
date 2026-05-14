@@ -16,12 +16,14 @@ use App\Http\Controllers\Api\Auth\ChangePasswordController;
 use App\Http\Controllers\Api\Auth\FcmController;
 use App\Http\Controllers\Api\Auth\ForgetPasswordController;
 use App\Http\Controllers\Api\Auth\NotificationController;
+use App\Http\Controllers\Api\FaceEmbedding\FaceEmbeddingController;
 use App\Http\Controllers\Api\Listview\AttendanceStudentController;
 use App\Http\Controllers\Api\Listview\GetLessonController;
 use App\Http\Controllers\Api\Listview\LectureLecturerController;
 use App\Http\Controllers\Api\Listview\LectureStudentController;
 use App\Http\Controllers\Api\Listview\PresenceController;
 use App\Http\Controllers\Api\Listview\PresenceLecturerController;
+use App\Http\Controllers\Api\Location\LocationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\LoginController;
 
@@ -44,6 +46,16 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('notifications', [NotificationController::class, 'index']);
     Route::post('notifications/send', [NotificationController::class, 'sendNotification']);
 
+    Route::prefix('location')->group(function () {
+        Route::get('/', [LocationController::class, 'index']);
+        Route::post('/', [LocationController::class, 'store']);
+        Route::get('/show', [LocationController::class, 'showLocation']);
+    });
+
+    Route::prefix('faceEmbedding')->group(function() {
+        Route::post('/store', [FaceEmbeddingController::class, 'store']);
+    });
+
     Route::prefix('activityLecturer')->group(function () {
         Route::post('presence/check-edit', [CheckPresenceController::class, 'checkPresenceEdit']);
         Route::post('presence/check-upload', [CheckPresenceController::class, 'checkPresenceUpload']);
@@ -58,6 +70,7 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('presence/lastIncrement', [PresenceIncrementController::class, 'getLastIncrement']);
         Route::post('presence/uploadPresence', [AddPresenceController::class, 'uploadPresence']);
         Route::get('presence/majors', [AddPresenceController::class, 'showMajors']);
+        Route::get('presence/rooms', [AddPresenceController::class, 'showRooms']);
         Route::get('presence/matkuls', [AddPresenceController::class, 'showMatkuls']);
         Route::get('presence/tahunAjarans', [AddPresenceController::class, 'showTahunAjarans']);
         Route::get('presence/disabledPertemuans', [AddPresenceController::class, 'showDisabledPertemuans']);
@@ -75,7 +88,6 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('presensi-summary/{mahasiswaId}', [SummaryController::class, 'countByMahasiswa']);
         Route::get('presensi-summary/dosen/{dosenId}', [SummaryController::class, 'countByDosen']);
     });
-
 
     Route::prefix('listview')->group(function () {
         Route::get('getLesson', [GetLessonController::class, 'getLessonStudent']);

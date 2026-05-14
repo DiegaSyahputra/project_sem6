@@ -17,8 +17,7 @@ class Surat extends Model
     protected $fillable = [
         'mahasiswa_id',
         'jenis',
-        'tgl_mulai',
-        'tgl_selesai',
+        'tgl',
         'foto_surat',
         'keterangan',
         'status',

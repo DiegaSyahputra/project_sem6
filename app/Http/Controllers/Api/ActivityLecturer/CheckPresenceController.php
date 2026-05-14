@@ -24,7 +24,7 @@ class CheckPresenceController extends Controller
         $presensis = Presensi::whereDate('tgl_presensi', $now->toDateString())
             ->whereTime('jam_awal', '>', $now->format('H:i:s'))
             ->whereTime('jam_awal', '<=', $now->copy()->addHour()->format('H:i:s'))
-            ->with('detailPresensis.mahasiswa.user') // pastikan relasi ini ada
+            ->with('detailPresensi.mahasiswa.user') // pastikan relasi ini ada
             ->get();
 
         $fcmService = new FcmV1Service();
@@ -54,7 +54,7 @@ class CheckPresenceController extends Controller
     public function checkRecentNotificationByDosenId(Request $request)
     {
         $request->validate([
-            'dosen_id' => 'required|integer|exists:dosens,id',
+            'dosen_id' => 'required|integer|exists:dosen,id',
         ]);
 
         $dosen = Dosen::with('user')->findOrFail($request->dosen_id);
@@ -75,7 +75,7 @@ class CheckPresenceController extends Controller
     public function checkRecentNotificationByMahasiswaId(Request $request)
     {
         $request->validate([
-            'mahasiswa_id' => 'required|integer|exists:mahasiswas,id',
+            'mahasiswa_id' => 'required|integer|exists:mahasiswa,id',
         ]);
 
         $mahasiswa = Mahasiswa::with('user')->findOrFail($request->mahasiswa_id);
@@ -96,13 +96,13 @@ class CheckPresenceController extends Controller
     public function checkPresenceEdit(Request $request)
     {
         $request->validate([
-            'presensis_id' => 'required|integer',
+            'presensi_id' => 'required|integer',
             'dosen_id' => 'required',
             'jam_awal' => 'required',
             'jam_akhir' => 'required',
         ]);
 
-        $presensi = Presensi::find($request->presensis_id);
+        $presensi = Presensi::find($request->presensi_id);
 
         if (!$presensi) {
             return response()->json([
@@ -202,7 +202,7 @@ class CheckPresenceController extends Controller
             'tgl_presensi' => 'required|date',
             'prodi_id' => 'required|integer',
             'semester' => 'required|integer',
-            'status' => 'required|in:aktif,libur',
+            'status' => 'required|in:aktif,libur,uts,uas',
             'pertemuan_ke' => 'required|integer',
             'matkul_id' => 'required|integer',
             'tahun_ajaran_id' => 'required|integer',

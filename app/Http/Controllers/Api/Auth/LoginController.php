@@ -129,8 +129,8 @@ class LoginController extends Controller
     {
         $request->validate([
             'role' => 'required|in:mahasiswa,dosen',
-            'mahasiswa_id' => 'nullable|required_if:role,mahasiswa|exists:mahasiswas,id',
-            'dosen_id' => 'nullable|required_if:role,dosen|exists:dosens,id',
+            'mahasiswa_id' => 'nullable|required_if:role,mahasiswa|exists:mahasiswa,id',
+            'dosen_id' => 'nullable|required_if:role,dosen|exists:dosen,id',
         ]);
 
         $user = null;
@@ -138,7 +138,7 @@ class LoginController extends Controller
 
         if ($request->role === 'mahasiswa') {
             $user = User::whereHas('mahasiswa', function ($q) use ($request) {
-                $q->where('mahasiswas.id', $request->mahasiswa_id); // Pastikan pakai nama tabel `mahasiswas`
+                $q->where('mahasiswa.id', $request->mahasiswa_id); // Pastikan pakai nama tabel `mahasiswas`
             })
                 ->with(['mahasiswa.prodi'])
                 ->first();
@@ -173,7 +173,7 @@ class LoginController extends Controller
 
         if ($request->role === 'dosen') {
             $user = User::whereHas('dosen', function ($q) use ($request) {
-                $q->where('dosens.id', $request->dosen_id); // Pastikan pakai nama tabel `dosens`
+                $q->where('dosen.id', $request->dosen_id); // Pastikan pakai nama tabel `dosens`
             })
                 ->with('dosen')
                 ->first();

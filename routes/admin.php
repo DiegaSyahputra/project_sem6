@@ -27,7 +27,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
 
     Route::resource('master-dosen', DosenController::class);
-Route::get('/api/filter-data', [DosenController::class, 'filter']);
+    Route::get('/api/filter-data', [DosenController::class, 'filter']);
     Route::post('/validate-field/dosen', [DosenController::class, 'validateField'])->name('admin.validate.field.dosen');
     Route::post('/master-dosen/import', [DosenController::class, 'import'])->name('master-dosen.import');
 
