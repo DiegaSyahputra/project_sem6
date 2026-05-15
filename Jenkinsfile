@@ -42,10 +42,15 @@ pipeline {
         stage('Deploy Application') {
             steps {
 
-                sh 'cd /var/www/html/project_sem6 && docker compose down'
+                sh '''
+                cd /var/www/html/project_sem6
 
-                sh 'cd /var/www/html/project_sem6 && docker compose up -d --build'
+                docker compose up -d --build app nginx
 
+                docker compose exec -T app php artisan migrate --force
+
+                docker compose exec -T app php artisan optimize:clear
+                '''
             }
         }
 
