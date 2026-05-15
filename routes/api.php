@@ -54,6 +54,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::prefix('faceEmbedding')->group(function() {
         Route::post('/store', [FaceEmbeddingController::class, 'store']);
+        Route::get('/show', [FaceEmbeddingController::class, 'showEmbedding']);
     });
 
     Route::prefix('activityLecturer')->group(function () {

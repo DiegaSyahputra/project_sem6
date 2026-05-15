@@ -25,7 +25,9 @@ class PresenceLecturerController extends Controller
         $data = Presensi::with(['pertemuan.matkul:id,nama_matkul,durasi_matkul,kode_matkul'])
             ->whereDate('tgl_presensi', now())
             ->where('dosen_id', $dosenId)
-            ->whereNotNull('link_zoom')
+            ->whereHas('pertemuan', function ($query) {
+                $query->where('status', 'aktif');
+            })
             ->orderByRaw('TIME(jam_awal)')
             ->get()
             ->map(function ($item) {
@@ -54,7 +56,7 @@ class PresenceLecturerController extends Controller
             'jam_akhir' => 'required|date_format:H:i',
         ]);
 
-        $presensi = Presensi::find($request->presensis_id);
+        $presensi = Presensi::find($request->presensi_id);
         $currentTime = now()->format('H:i');
 
         // Validasi: Tidak boleh update saat jam_awal sampai jam_presensi atau setelah jam_presensi

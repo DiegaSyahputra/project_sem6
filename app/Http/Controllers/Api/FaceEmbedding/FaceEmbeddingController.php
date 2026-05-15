@@ -31,4 +31,30 @@ class FaceEmbeddingController extends Controller
             ]
         );
     }
+
+    public function showEmbedding(Request $request)
+    {
+        $validated = $request->validate([
+            'mahasiswa_id' => 'required'
+        ]);
+
+        $faceEmbedding = FaceEmbedding::where('mahasiswa_id', $validated['mahasiswa_id'])->first();
+
+        if (!$faceEmbedding) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Embedding wajah tidak terdaftar',
+                'data' => null
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Embedding wajah ditemukan',
+            'data' => [
+                'mahasiswa_id' => $faceEmbedding->mahasiswa_id,
+                'embedding' => $faceEmbedding->embedding,
+            ]
+        ]);
+    }
 }

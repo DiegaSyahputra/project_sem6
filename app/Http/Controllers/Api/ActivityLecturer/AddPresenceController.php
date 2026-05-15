@@ -42,6 +42,7 @@ class AddPresenceController extends Controller
                     'lokasi_id' => 'required|integer',
                     'jam_awal' => 'required',
                     'jam_akhir' => 'required',
+                    'kategori' => 'required',
                 ]);
 
                 if ($request->kategori != null && $request->kategori == "daring") {

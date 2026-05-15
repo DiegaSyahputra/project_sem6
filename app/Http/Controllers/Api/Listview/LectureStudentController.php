@@ -29,7 +29,7 @@ class LectureStudentController extends Controller
                 ->get()
                 ->map(function ($item) {
                     return [
-                        'presensis_id' => $item->presensi->id,
+                        'presensi_id' => $item->presensi->id,
                         'nama_matkul' => $item->presensi->pertemuan->matkul->nama_matkul,
                         'semester' => $item->presensi->pertemuan->semester,
                         'nama_dosen' => $item->presensi->dosen->nama,
