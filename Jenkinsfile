@@ -19,6 +19,21 @@
 //     }
 // }
 
+// pipeline {
+//     agent any
+
+//     stages {
+
+//         stage('Deploy Application') {
+//             steps {
+//                 sh 'docker compose down'
+//                 sh 'docker compose up -d --build'
+//             }
+//         }
+
+//     }
+// }
+
 pipeline {
     agent any
 
@@ -26,8 +41,11 @@ pipeline {
 
         stage('Deploy Application') {
             steps {
-                sh 'docker compose down'
-                sh 'docker compose up -d --build'
+
+                sh 'cd /var/www/html/project_sem6 && docker compose down'
+
+                sh 'cd /var/www/html/project_sem6 && docker compose up -d --build'
+
             }
         }
 
