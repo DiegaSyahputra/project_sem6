@@ -26,6 +26,8 @@ services:
         build: .
         container_name: project-sem6-app
         working_dir: /var/www
+        volumes:
+            - ./.env:/var/www/.env
         depends_on:
             - mysql
 
