@@ -47,6 +47,10 @@ pipeline {
 
                 docker compose up -d --build app nginx
 
+                echo "Waiting for MySQL..."
+
+                sleep 15
+
                 docker compose exec -T app php artisan migrate --force
 
                 docker compose exec -T app php artisan optimize:clear
