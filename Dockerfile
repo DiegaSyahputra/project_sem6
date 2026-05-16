@@ -70,6 +70,51 @@
 # CMD ["php-fpm"]
 
 
+# FROM php:8.2-fpm
+
+# WORKDIR /var/www
+
+# RUN apt-get update && apt-get install -y \
+#     git \
+#     unzip \
+#     zip \
+#     curl \
+#     libzip-dev \
+#     libpng-dev \
+#     libjpeg-dev \
+#     libfreetype6-dev
+
+# RUN docker-php-ext-install pdo_mysql gd zip
+
+# # Install Node.js
+# RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+#     apt-get install -y nodejs
+
+# # Install Composer
+# COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# COPY . .
+
+# # Install Laravel dependencies
+# RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+
+# # Install frontend dependencies
+# RUN npm install
+
+# # Build Vite production assets
+# RUN npm run build
+
+# RUN chown -R www-data:www-data storage
+# RUN chown -R www-data:www-data bootstrap/cache
+
+# RUN chmod -R 775 storage
+# RUN chmod -R 775 bootstrap/cache
+
+# EXPOSE 9000
+
+# CMD ["php-fpm"]
+
+
 FROM php:8.2-fpm
 
 WORKDIR /var/www
@@ -86,29 +131,27 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install pdo_mysql gd zip
 
-# Install Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 
-# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY . .
+# composer cache
+COPY composer.json composer.lock ./
 
-# Install Laravel dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Install frontend dependencies
+# npm cache
+COPY package.json package-lock.json ./
+
 RUN npm install
 
-# Build Vite production assets
+# source code
+COPY . .
+
 RUN npm run build
 
-RUN chown -R www-data:www-data storage
-RUN chown -R www-data:www-data bootstrap/cache
-
-RUN chmod -R 775 storage
-RUN chmod -R 775 bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 9000
 
