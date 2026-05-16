@@ -86,6 +86,10 @@ pipeline {
 
                 docker compose exec -T app php artisan migrate --force
 
+                docker compose exec -T app mkdir -p storage/framework/views
+
+                docker compose exec -T app chmod -R 775 storage bootstrap/cache
+
                 docker compose exec -T app php artisan optimize:clear
                 '''
             }
