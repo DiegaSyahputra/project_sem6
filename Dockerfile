@@ -166,3 +166,12 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 EXPOSE 9000
 
 CMD ["php-fpm"]
+
+RUN mkdir -p storage/framework/views \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/logs
+
+RUN chown -R www-data:www-data /var/www
+
+RUN chmod -R 775 storage bootstrap/cache
