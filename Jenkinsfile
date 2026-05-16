@@ -34,6 +34,7 @@
 //     }
 // }
 
+
 pipeline {
     agent any
 
@@ -45,15 +46,13 @@ pipeline {
                 sh '''
                 cd /var/www/html/project_sem6
 
-                docker compose up -d --build app nginx
-
-                echo "Waiting for MySQL..."
-
-                sleep 15
+                docker compose up -d --build
 
                 docker compose exec -T app php artisan migrate --force
 
                 docker compose exec -T app php artisan optimize:clear
+
+                docker compose exec -T app npm run build
                 '''
             }
         }
