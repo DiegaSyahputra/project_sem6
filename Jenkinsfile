@@ -50,9 +50,9 @@ pipeline {
 
                 docker compose exec -T app php artisan migrate --force
 
-                docker compose exec -T app php artisan optimize:clear
-
                 docker compose exec -T app npm run build
+
+                docker compose exec -T app php artisan optimize:clear
                 '''
             }
         }
