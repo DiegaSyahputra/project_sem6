@@ -46,6 +46,8 @@ pipeline {
                 sh '''
                 cd /var/www/html/project_sem6
 
+                git pull origin main
+
                 docker compose build --no-cache
 
                 docker compose up -d
