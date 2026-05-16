@@ -86,7 +86,7 @@
             <div class="w-full lg:w-1/2 text-center lg:text-left">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight"
                     data-aos="fade-right">
-                    STIPRESadfafasdf - Aplikasi Presensi <br class="hidden sm:inline" />
+                    STIPRES - Aplikasi Presensi <br class="hidden sm:inline" />
                     Stikes Panti Waluya
                 </h1>
 
