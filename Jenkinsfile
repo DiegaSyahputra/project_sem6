@@ -80,6 +80,10 @@ pipeline {
 
                 docker compose up -d --build --force-recreate
 
+                echo "Waiting MySQL..."
+
+                sleep 20
+
                 docker compose exec -T app php artisan migrate --force
 
                 docker compose exec -T app php artisan optimize:clear
