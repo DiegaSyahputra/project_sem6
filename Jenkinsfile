@@ -65,6 +65,40 @@
 // }
 
 
+// pipeline {
+//     agent any
+
+//     stages {
+
+//         stage('Deploy Application') {
+//             steps {
+
+//                 sh '''
+//                 cd /var/www/html/project_sem6
+
+//                 git pull origin main
+
+//                 docker compose up -d --build --force-recreate
+
+//                 echo "Waiting MySQL..."
+
+//                 sleep 20
+
+//                 docker compose exec -T app php artisan migrate --force
+
+//                 docker compose exec -T app mkdir -p storage/framework/views
+
+//                 docker compose exec -T app chmod -R 775 storage bootstrap/cache
+
+//                 docker compose exec -T app php artisan optimize:clear
+//                 '''
+//             }
+//         }
+
+//     }
+// }
+
+
 pipeline {
     agent any
 
@@ -78,17 +112,11 @@ pipeline {
 
                 git pull origin main
 
-                docker compose up -d --build --force-recreate
+                docker compose restart app nginx
 
-                echo "Waiting MySQL..."
-
-                sleep 20
+                sleep 10
 
                 docker compose exec -T app php artisan migrate --force
-
-                docker compose exec -T app mkdir -p storage/framework/views
-
-                docker compose exec -T app chmod -R 775 storage bootstrap/cache
 
                 docker compose exec -T app php artisan optimize:clear
                 '''
