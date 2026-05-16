@@ -1,5 +1,7 @@
-.git
 node_modules
 vendor
-.env
 storage/logs
+storage/framework
+.git
+.env
+docker-compose.yml
