@@ -46,7 +46,9 @@ pipeline {
                 sh '''
                 cd /var/www/html/project_sem6
 
-                docker compose up -d --build
+                docker compose build --no-cache
+
+                docker compose up -d
 
                 docker compose exec -T app php artisan migrate --force
 
