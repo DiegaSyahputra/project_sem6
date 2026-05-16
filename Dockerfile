@@ -136,9 +136,19 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# composer cache
+# copy composer dulu
 COPY composer.json composer.lock ./
 
+# copy laravel core penting
+COPY artisan ./
+COPY app ./app
+COPY bootstrap ./bootstrap
+COPY config ./config
+COPY database ./database
+COPY routes ./routes
+COPY resources ./resources
+
+# composer install
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # npm cache
@@ -146,7 +156,7 @@ COPY package.json package-lock.json ./
 
 RUN npm install
 
-# source code
+# copy semua source terakhir
 COPY . .
 
 RUN npm run build
